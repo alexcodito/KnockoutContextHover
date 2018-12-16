@@ -1,0 +1,28 @@
+<div id="toggle-legend">
+    <div id="toggle-live-context">
+        <span class="toggle-live-context-key">CTRL</span>
+        <span class="toggle-live-context-key-description">Toggle Live Context</span>
+    </div>
+    <div id="toggle-follow">
+        <span class="toggle-live-context-key">SHIFT</span>
+        <span class="toggle-live-context-key-description">Toggle Follow</span>
+    </div>
+</div>
+
+<ul id="ko-context-hover-list" data-bind="template: { name: 'ko-context-hover-list-template', data: { hoverContext: ko.unwrap($root.targetElementKoData), hoverContextKeys: Object.keys(ko.unwrap($root.targetElementKoData)) } }"></ul>
+
+<script type="text/html" id="ko-context-hover-list-template" class="display-none">
+    <!-- ko foreach: { data: $data.hoverContextKeys } -->
+    <!-- ko let: { childrenNodes: ko.observable(), isInvokable: $root.checkDataInvokable(ko.unwrap($parent.hoverContext)[$data]), isFunction: $root.checkDataIsFunction(ko.unwrap($parent.hoverContext)[$data]) } -->
+    <li data-bind="hoverClass: 'ko-context-hover-item'">
+        <span class="chevron" data-bind="click: $context.isInvokable && $root.toggleNode.bind(null, $parent.hoverContext, $data, $context.childrenNodes), css: { 'chevron-uncollapsed': $context.isInvokable && ko.unwrap($context.childrenNodes), 'chevron-disabled': !$context.isInvokable } "></span>
+        <svg class="ko-context-hover-item-button ko-context-hover-item-button-console" data-bind="click: $root.consoleLogElementContext.bind(null, $parent.hoverContext, $data)"></svg>
+        <span class="ko-context-hover-item-descriptor" data-bind="text: $data + ':'"></span>
+        <span class="ko-context-hover-item-value" data-bind="text: $root.parseKnockoutValue(ko.unwrap($parent.hoverContext)[$data]), css: { 'ko-context-hover-item-descriptor-clickable': $context.isFunction }, click: $context.isFunction ? $root.executeFunction.bind(null, ko.unwrap($parent.hoverContext)[$data]) : undefined"></span>
+        <!-- ko if: $context.childrenNodes && $context.childrenNodes() -->
+        <ul data-bind="template: { name: 'ko-context-hover-list-template', data: { hoverContext: $context.childrenNodes, hoverContextKeys: Object.keys(ko.unwrap($context.childrenNodes)) } }"></ul>
+        <!-- /ko -->
+    </li>
+    <!-- /ko -->
+    <!-- /ko -->
+</script>
