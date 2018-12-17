@@ -17,11 +17,13 @@ var KoContextVm = function() {
         var ret = undefined;
         depth = depth || 1;
 
+        var truncate = function(str, max) {
+            return str.length > max ? str.substr(0, max - 4) + " ..." : str;
+        };
+
         if (item) {
 
-            if (ko.isObservable) {
-                ret = ko.unwrap(item);
-            }
+            ret = ko.unwrap(item);
 
             if (ret === null) {
                 return "null";
@@ -32,7 +34,7 @@ var KoContextVm = function() {
             }
 
             if (typeof ret === 'string' || ret instanceof String) {
-                ret = '"' + ret + '"';
+                ret = '"' + truncate(ret, 200) + '"';
             }
 
             if ($.isArray(ret)) {
@@ -43,15 +45,15 @@ var KoContextVm = function() {
 
                 //ret = "{ " + Object.entries(ret).join(", ") + " }";
                 ret = Object.entries(ret).map(function (entry) {
-                    if (!depth || depth < 2) {
+                    if (depth < 2) {
                         return " " + entry[0] + ': ' + parseKnockoutValue(entry[1], depth++);
                     } else {
-                        return " " + entry[0] + ': ' + (typeof entry[1]);
+                        return " " + entry[0] + ': ' + (typeof entry[1] === 'string' ? truncate(entry[1], 200) : typeof entry[1]);
                     }
                 }).toString();
 
                 //ret = "{ " + ret + " }";
-                ret = "{ " + (ret.length > 100 ? ret.substr(0, 100) + " ..." : ret) + " }";
+                ret = "{ " + truncate(ret, 200) + " }";
             }
 
             if ($.isFunction(ret)) {
