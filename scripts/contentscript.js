@@ -2,7 +2,7 @@ function runScriptInPageScope(scriptPath) {
 
     var script = document.createElement('script');
     script.setAttribute("type", "text/javascript");
-    script.setAttribute("src", browser.extension.getURL(scriptPath));
+    script.setAttribute("src", chrome.extension.getURL(scriptPath));
 
     script.onload = function () {
         this.remove();
@@ -11,7 +11,7 @@ function runScriptInPageScope(scriptPath) {
     (document.body || document.documentElement).appendChild(script);
 }
 
-browser.runtime.onMessage.addListener(function (message, sender, callback) {
+chrome.runtime.onMessage.addListener(function (message, sender, callback) {
 
     if (message.functiontoInvoke === "toggleKoContextHover") {
 
@@ -28,7 +28,7 @@ browser.runtime.onMessage.addListener(function (message, sender, callback) {
 
         (document.body || document.documentElement).appendChild(contextHoverPanel);
 
-        $(contextHoverPanel).load(browser.extension.getURL("markup/panel.html"), function (response, status, xhr) {
+        $(contextHoverPanel).load(chrome.extension.getURL("markup/panel.html"), function (response, status, xhr) {
 
             if (status === "success") {
 
