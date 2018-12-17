@@ -89,7 +89,7 @@ var KoContextVm = function() {
     };
 
     var handleMouseMove = function (e) {
-
+        
         if (!$("#ko-context-hover").length) {
 
             $(this).off('mousemove', handleMouseMove);
@@ -106,7 +106,7 @@ var KoContextVm = function() {
 
         if (koContextHoverFollowCursorOn === true) {
             koContextHoverElement.style.left = tempX + 5 + "px";
-            koContextHoverElement.style.top = tempY + 15 + "px";
+            koContextHoverElement.style.top = tempY + document.documentElement.scrollTop + 15 + "px";
         }
 
         if (koContextHoverHalted) {
