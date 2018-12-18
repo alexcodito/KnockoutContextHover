@@ -91,8 +91,10 @@ var KoContextVm = function() {
     };
 
     var handleMouseMove = function (e) {
-        
-        if (!$("#ko-context-hover").length) {
+
+        var koContextHover = $("#ko-context-hover");
+
+        if (!koContextHover.length) {
 
             $(this).off('mousemove', handleMouseMove);
 
@@ -100,6 +102,24 @@ var KoContextVm = function() {
                 targetElement.classList.remove("ko-context-hover-target-element");
             }
 
+            return;
+        }
+
+        koContextHover = koContextHover.get(0);
+
+        var checkTargetSelf = function(target) {
+
+            if (target === koContextHover) {
+                return true;
+            } else if (target.parentElement) {
+                return checkTargetSelf(target.parentElement);
+            }
+
+            return false;
+
+        };
+
+        if (checkTargetSelf(e.originalEvent.target)) {
             return;
         }
 
