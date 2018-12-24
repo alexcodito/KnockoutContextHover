@@ -15,7 +15,6 @@
       "css": [ "styles/ko-context-hover-style.css" ],
       "js": [
         "scripts/knockoutjs-3.4.2.min.js",
-        "scripts/jquery-3.2.1.min.js",
         "scripts/contentscript.js"
       ]
     }

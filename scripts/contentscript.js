@@ -9,36 +9,62 @@ function runScriptInPageScope(scriptPath) {
     };
 
     (document.body || document.documentElement).appendChild(script);
+
+}
+
+function loadHtml(url, element, callback) {
+
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function () {
+        if (this.status === 200) {
+
+            if (element) {
+                element.innerHTML = request.responseText;
+            }
+
+            if (callback && typeof callback === "function") {
+                callback(this.status);
+            }        
+
+        }
+    };
+
+    request.open("GET", url, false);
+    request.send(null);
+
 }
 
 chrome.runtime.onMessage.addListener(function (message, sender, callback) {
 
     if (message.functiontoInvoke === "toggleKoContextHover") {
 
+        var contextHoverPanel = document.getElementById('ko-context-hover');
+
         // Toggle Off
-        if ($("#ko-context-hover").length) {
-            $("#ko-context-hover").detach();
-            $("#ko-context-hover").remove();
+        if (contextHoverPanel) {
+            contextHoverPanel.remove();
             return;
         }
 
         // Toggle On
-        var contextHoverPanel = document.createElement('div');
+        contextHoverPanel = document.createElement('div');
         contextHoverPanel.id = 'ko-context-hover';
 
         (document.body || document.documentElement).appendChild(contextHoverPanel);
 
-        $(contextHoverPanel).load(chrome.extension.getURL("markup/panel.html"), function (response, status, xhr) {
+        loadHtml(chrome.extension.getURL("markup/panel.html"), contextHoverPanel,
+            function(status) {
 
-            if (status === "success") {
+                if (status === 200) {
 
-                runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.let.js');
-                runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.hoverClass.js');
-                runScriptInPageScope('scripts/ko-context-hover.js');
+                    runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.let.js');
+                    runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.hoverClass.js');
+                    runScriptInPageScope('scripts/ko-context-hover.js');
 
-            }
+                }
 
-        });
+            });
 
     }
 

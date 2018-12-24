@@ -1,12 +1,16 @@
-var KoContextVm = function() {
+var KoContextVm = function (ko) {
+
+    if (!ko) {
+        return undefined;
+    }
 
     var self = this;
     var targetElement;
     var koContextHoverHalted = false;
     var koContextHoverFollowCursorOn = true;
 
-    var koContextHoverElement = $("#ko-context-hover").get(0);
-    var koContextHoverListElement = $("#ko-context-hover-list").get(0);
+    var koContextHoverElement = document.getElementById('ko-context-hover');
+    var koContextHoverListElement = document.getElementById('ko-context-hover-list');
 
     if (!koContextHoverElement || !koContextHoverListElement) {
         return undefined;
@@ -17,7 +21,7 @@ var KoContextVm = function() {
         var ret = undefined;
         depth = depth || 1;
 
-        var truncate = function(str, max) {
+        var truncate = function (str, max) {
             return str.length > max ? str.substr(0, max - 4) + " ..." : str;
         };
 
@@ -37,7 +41,7 @@ var KoContextVm = function() {
                 ret = '"' + truncate(ret, 200) + '"';
             }
 
-            if ($.isArray(ret)) {
+            if (Array.isArray(ret)) {
                 ret = "Array [" + ret.length + "]";
             }
 
@@ -56,7 +60,7 @@ var KoContextVm = function() {
                 ret = "{ " + truncate(ret, 200) + " }";
             }
 
-            if ($.isFunction(ret)) {
+            if (typeof ret === "function") {
                 ret = "function";
             }
 
@@ -69,9 +73,9 @@ var KoContextVm = function() {
 
     var handleKeyUp = function (e) {
 
-        if (!$("#ko-context-hover").length) {
+        if (!document.getElementById("ko-context-hover")) {
 
-            $(this).off('keyup', handleKeyUp);
+            document.removeEventListener('keyup', handleKeyUp);
 
             if (targetElement) {
                 targetElement.classList.remove("ko-context-hover-target-element");
@@ -80,11 +84,11 @@ var KoContextVm = function() {
             return;
         }
 
-        if (e.originalEvent.keyCode === 16) {
+        if (e.keyCode === 16) {
             koContextHoverFollowCursorOn = !koContextHoverFollowCursorOn;
         }
 
-        if (e.originalEvent.keyCode === 17) {
+        if (e.keyCode === 17) {
             koContextHoverHalted = !koContextHoverHalted;
         }
 
@@ -92,11 +96,11 @@ var KoContextVm = function() {
 
     var handleMouseMove = function (e) {
 
-        var koContextHover = $("#ko-context-hover");
+        var koContextHover = document.getElementById("ko-context-hover");
 
-        if (!koContextHover.length) {
+        if (!koContextHover) {
 
-            $(this).off('mousemove', handleMouseMove);
+            document.removeEventListener('mousemove', handleMouseMove);
 
             if (targetElement) {
                 targetElement.classList.remove("ko-context-hover-target-element");
@@ -105,9 +109,7 @@ var KoContextVm = function() {
             return;
         }
 
-        koContextHover = koContextHover.get(0);
-
-        var checkTargetSelf = function(target) {
+        var checkTargetSelf = function (target) {
 
             if (target === koContextHover) {
                 return true;
@@ -119,7 +121,7 @@ var KoContextVm = function() {
 
         };
 
-        if (checkTargetSelf(e.originalEvent.target)) {
+        if (checkTargetSelf(e.target)) {
             return;
         }
 
@@ -164,8 +166,8 @@ var KoContextVm = function() {
         }
     };
 
-    $(document).on("keyup", handleKeyUp);
-    $(document).on("mousemove", handleMouseMove);
+    document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('mousemove', handleMouseMove);
 
     self.targetElementKoData = ko.observable({});
 
@@ -185,15 +187,19 @@ var KoContextVm = function() {
         }
     };
 
-    self.checkDataInvokable = function(data) {
+    self.checkDataInvokable = function (data) {
 
         var uData = ko.unwrap(data);
 
-        return uData !== undefined && uData !== null && Array.isArray(uData) || typeof uData === "object";
+        return uData !== undefined
+            && uData !== null
+            && (Array.isArray(uData) || typeof uData === "object")
+            && uData !== {}
+            && uData !== "";
 
     };
 
-    self.checkDataIsFunction = function(data) {
+    self.checkDataIsFunction = function (data) {
 
         var uData = ko.unwrap(data);
 
@@ -205,8 +211,8 @@ var KoContextVm = function() {
 
         var uData = ko.unwrap(data);
 
-        if(uData && typeof uData === "function") {
-            console.log(uData());  
+        if (uData && typeof uData === "function") {
+            console.log(uData());
         }
 
     };
@@ -215,17 +221,21 @@ var KoContextVm = function() {
 
 };
 
-var koContextVm = new KoContextVm();
+(function (ko) {
 
-(function ($, ko) {
-    
-    var koContextHoverElement = $("#ko-context-hover").get(0);
-    var koContextHoverListElement = $("#ko-context-hover-list").get(0);
-    
+    if (!ko) {
+        return;
+    }
+
+    var koContextVm = new KoContextVm(ko);
+
+    var koContextHoverElement = document.getElementById("ko-context-hover");
+    var koContextHoverListElement = document.getElementById("ko-context-hover-list");
+
     if (!koContextHoverElement || !koContextHoverListElement) {
         return;
     }
 
     ko.applyBindings(koContextVm, koContextHoverElement);
 
-})(window.$, window.ko);
+})(window.ko || ko);
