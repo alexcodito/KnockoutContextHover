@@ -8,6 +8,11 @@
   "icons": {
     "48": "icons/ko-context-hover-icon.svg"
   },
+  
+  "permissions": [
+	  "activeTab",
+	  "contextMenus"
+  ],
 
   "content_scripts": [
     {
@@ -30,11 +35,6 @@
     "scripts/ko-context-hover.js",
     "reference-binding-handlers/ko.bindingHandlers.hoverClass.js",
     "reference-binding-handlers/ko.bindingHandlers.let.js"
-  ],
-
-  "permissions": [
-    "activeTab",
-    "contextMenus"
   ],
 
   "applications": {

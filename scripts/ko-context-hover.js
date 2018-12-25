@@ -159,8 +159,18 @@ var KoContextVm = function (ko) {
                     self.targetElementKoData(newContext);
                 }
 
+	            self.targetElementAttributes({
+		            
+					tagName: targetElement.tagName,
+					name: targetElement.name,
+					id: targetElement.id,
+					classList: Array.map(targetElement.classList, function (className) { return ' .' + className } )
+
+	            });
+
             } else {
                 self.targetElementKoData({});
+	            self.targetElementAttributes(undefined);
             }
 
         }
@@ -169,8 +179,8 @@ var KoContextVm = function (ko) {
     document.addEventListener('keyup', handleKeyUp);
     document.addEventListener('mousemove', handleMouseMove);
 
+    self.targetElementAttributes = ko.observable();
     self.targetElementKoData = ko.observable({});
-
     self.parseKnockoutValue = parseKnockoutValue;
 
     self.consoleLogElementContext = function (hoverContext, data) {
@@ -193,7 +203,7 @@ var KoContextVm = function (ko) {
 
         return uData !== undefined
             && uData !== null
-            && (Array.isArray(uData) || typeof uData === "object")
+            && ((typeof uData === "object" && !Array.isArray(uData)) || (Array.isArray(uData) && uData.length > 0))
             && uData !== {}
             && uData !== "";
 
@@ -206,6 +216,30 @@ var KoContextVm = function (ko) {
         return uData !== undefined && uData !== null && typeof uData === "function";
 
     };
+
+	self.checkObservableText = function(data) {
+
+		var uData = ko.unwrap(data);
+
+		return data !== undefined 
+			&& data !== null 
+			&& ko.isObservable(data) 
+			&& ko.isWriteableObservable(data) 
+			&& (uData === null || uData === undefined || typeof uData === "string");
+
+	};
+
+	self.checkObservableBoolean = function(data) {
+
+		var uData = ko.unwrap(data);
+
+		return data !== undefined 
+			&& data !== null 
+			&& ko.isObservable(data) 
+			&& ko.isWriteableObservable(data) 
+			&& typeof uData === "boolean";
+
+	};
 
     self.executeFunction = function (data) {
 
