@@ -109,6 +109,7 @@ var KoContextVm = function (ko) {
             return;
         }
 
+		// Ensure that the mouse isn't hovering the KO Context Hover panel itself to avoid recursion.
         var checkTargetSelf = function (target) {
 
             if (target === koContextHover) {
@@ -159,18 +160,18 @@ var KoContextVm = function (ko) {
                     self.targetElementKoData(newContext);
                 }
 
-	            self.targetElementAttributes({
-		            
-					tagName: targetElement.tagName,
-					name: targetElement.name,
-					id: targetElement.id,
-					classList: Array.map(targetElement.classList, function (className) { return ' .' + className } )
+                self.targetElementAttributes({
 
-	            });
+                    tagName: targetElement.tagName,
+                    name: targetElement.name,
+                    id: targetElement.id,
+                    classList: Array.map(targetElement.classList, function (className) { return ' .' + className; })
+
+                });
 
             } else {
                 self.targetElementKoData({});
-	            self.targetElementAttributes(undefined);
+                self.targetElementAttributes(undefined);
             }
 
         }
@@ -217,29 +218,29 @@ var KoContextVm = function (ko) {
 
     };
 
-	self.checkObservableText = function(data) {
+    self.checkObservableText = function (data) {
 
-		var uData = ko.unwrap(data);
+        var uData = ko.unwrap(data);
 
-		return data !== undefined 
-			&& data !== null 
-			&& ko.isObservable(data) 
-			&& ko.isWriteableObservable(data) 
-			&& (uData === null || uData === undefined || typeof uData === "string");
+        return data !== undefined
+            && data !== null
+            && ko.isObservable(data)
+            && ko.isWriteableObservable(data)
+            && (uData === null || uData === undefined || typeof uData === "string");
 
-	};
+    };
 
-	self.checkObservableBoolean = function(data) {
+    self.checkObservableBoolean = function (data) {
 
-		var uData = ko.unwrap(data);
+        var uData = ko.unwrap(data);
 
-		return data !== undefined 
-			&& data !== null 
-			&& ko.isObservable(data) 
-			&& ko.isWriteableObservable(data) 
-			&& typeof uData === "boolean";
+        return data !== undefined
+            && data !== null
+            && ko.isObservable(data)
+            && ko.isWriteableObservable(data)
+            && typeof uData === "boolean";
 
-	};
+    };
 
     self.executeFunction = function (data) {
 
