@@ -1,4 +1,4 @@
-if (ko && !ko.bindingHandlers['let']) {
+if (window.ko && !ko.bindingHandlers['let']) {
     ko.bindingHandlers['let'] = {
         'init': function (element, valueAccessor, allBindings, viewModel, bindingContext) {
             // Make a modified binding context, with extra properties, and apply it to descendant elements
