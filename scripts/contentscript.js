@@ -1,71 +1,72 @@
 function runScriptInPageScope(scriptPath) {
 
-    var script = document.createElement('script');
-    script.setAttribute("type", "text/javascript");
-    script.setAttribute("src", chrome.extension.getURL(scriptPath));
+	var script = document.createElement('script');
+	script.setAttribute("type", "text/javascript");
+	script.setAttribute("src", chrome.extension.getURL(scriptPath));
 
-    script.onload = function () {
-        this.remove();
-    };
+	script.onload = function () {
+		this.remove();
+	};
 
-    (document.body || document.documentElement).appendChild(script);
+	(document.body || document.documentElement).appendChild(script);
 
 }
 
 function loadHtml(url, element, callback) {
 
-    var request = new XMLHttpRequest();
+	var request = new XMLHttpRequest();
 
-    request.onreadystatechange = function () {
-        if (this.status === 200) {
+	request.onreadystatechange = function () {
+		if (this.status === 200) {
 
-            if (element) {
-                element.innerHTML = request.responseText;
-            }
+			if (element) {
+				element.innerHTML = request.responseText;
+			}
 
-            if (callback && typeof callback === "function") {
-                callback(this.status);
-            }        
+			if (callback && typeof callback === "function") {
+				callback(this.status);
+			}
 
-        }
-    };
+		}
+	};
 
-    request.open("GET", url, false);
-    request.send(null);
+	request.open("GET", url, false);
+	request.send(null);
 
 }
 
 chrome.runtime.onMessage.addListener(function (message, sender, callback) {
 
-    if (message.functiontoInvoke === "toggleKoContextHover") {
+	if (message.functiontoInvoke === "toggleKoContextHover") {
 
-        var contextHoverPanel = document.getElementById('ko-context-hover');
+		var contextHoverPanel = document.getElementById('ko-context-hover');
 
-        // Toggle Off
-        if (contextHoverPanel) {
-            contextHoverPanel.remove();
-            return;
-        }
+		// Toggle Off
+		if (contextHoverPanel) {
+			contextHoverPanel.remove();
+			return;
+		}
 
-        // Toggle On
-        contextHoverPanel = document.createElement('div');
-        contextHoverPanel.id = 'ko-context-hover';
+		// Toggle On
+		contextHoverPanel = document.createElement('div');
+		contextHoverPanel.id = 'ko-context-hover';
 
-        (document.body || document.documentElement).appendChild(contextHoverPanel);
+		(document.body || document.documentElement).appendChild(contextHoverPanel);
 
-        loadHtml(chrome.extension.getURL("markup/panel.html"), contextHoverPanel,
-            function(status) {
+		loadHtml(chrome.extension.getURL("markup/panel.html"), contextHoverPanel,
+			function (status) {
 
-                if (status === 200) {
+				if (status === 200) {
 
-                    runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.let.js');
-                    runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.hoverClass.js');
-                    runScriptInPageScope('scripts/ko-context-hover.js');
+					runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.let.js');
+					runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.hoverClass.js');
+					runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.visibility.js');
+					runScriptInPageScope('scripts/ko-context-hover.js');
 
-                }
+				}
 
-            });
+			});
 
-    }
+	}
 
 });
