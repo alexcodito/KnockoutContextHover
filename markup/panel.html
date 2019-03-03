@@ -1,46 +1,70 @@
-<div id="toggle-legend">
-    <div id="toggle-live-context">
-        <span class="toggle-live-context-key">CTRL</span>
-        <span class="toggle-live-context-key-description">Toggle Live Context</span>
+<div id="ko-context-hover-legend">
+    <div class="ko-context-hover-pill-group">
+        <span class="ko-context-hover-pill-header">Live Context</span>
+        <span class="ko-context-hover-pill" data-bind="click: $root.settings.set.bind(null, $root.settings.koContextHoverHalted, !$root.settings.koContextHoverHalted()), css: { 'ko-context-hover-pill-default': $root.settings.koContextHoverHalted(), 'ko-context-hover-pill-info': !$root.settings.koContextHoverHalted() }">SHIFT + 1</span>
     </div>
-    <div id="toggle-follow">
-        <span class="toggle-live-context-key">SHIFT</span>
-        <span class="toggle-live-context-key-description">Toggle Follow</span>
+    <div class="ko-context-hover-pill-group">
+        <span class="ko-context-hover-pill-header">Follow Mouse</span>
+        <span class="ko-context-hover-pill" data-bind="click: $root.settings.set.bind(null, $root.settings.koContextHoverFollowCursorHalted, !$root.settings.koContextHoverFollowCursorHalted()), css: { 'ko-context-hover-pill-default': $root.settings.koContextHoverFollowCursorHalted(), 'ko-context-hover-pill-info': !$root.settings.koContextHoverFollowCursorHalted() }">SHIFT + 2</span>
+    </div>
+    <div class="ko-context-hover-pill-group">
+        <span class="ko-context-hover-pill-header">Scope</span>
+        <!-- ko foreach: $root.ref.scopes -->
+        <span class="ko-context-hover-pill" data-bind="text: name, click: $root.settings.set.bind(null, $root.settings.rootScope, $data), css: { 'ko-context-hover-pill-default': $root.settings.rootScope().name !== name, 'ko-context-hover-pill-info': $root.settings.rootScope().name === name }"></span>
+        <!-- /ko -->
+    </div>
+    <div class="ko-context-hover-pill-group">
+        <span class="ko-context-hover-pill-header">Log Unwrap</span>
+        <!-- ko foreach: $root.ref.yesNo -->
+        <span class="ko-context-hover-pill" data-bind="text: name, click: $root.settings.set.bind(null, $root.settings.logUnwrap, $data.value), css: { 'ko-context-hover-pill-default': $root.settings.logUnwrap() !== value, 'ko-context-hover-pill-info': $root.settings.logUnwrap() === value }"></span>
+        <!-- /ko -->
     </div>
 </div>
 
-<div id="ko-context-hover-target-element" data-bind="with: $root.targetElementAttributes">
-	<span id="ko-context-hover-target-element-tag" data-bind="visible: tagName, text: tagName"></span>
-	<span id="ko-context-hover-target-element-name" data-bind="visible: name, text: name"></span>
-	<span id="ko-context-hover-target-element-id" data-bind="visible: id, text: '#' + id.trim()"></span>
-	<span id="ko-context-hover-target-element-class-list" data-bind="visible: classList, text: classList"></span>
+<!-- ko if: $root.viewMode.context -->
+<div id="ko-context-hover-target-element-info" data-bind="with: $root.targetElementAttributes">
+    <svg class="ko-context-hover-item-button arrows-cw" data-bind="click: $root.reapplyTargetElementBindings"></svg>
+    <span id="ko-context-hover-target-element-info-tag" data-bind="visible: tagName, text: tagName"></span>
+    <span id="ko-context-hover-target-element-info-name" data-bind="visible: name, text: name"></span>
+    <span id="ko-context-hover-target-element-info-id" data-bind="visible: id, text: '#' + id.trim()"></span>
+    <span id="ko-context-hover-target-element-info-class-list" data-bind="visible: classList, text: classList"></span>
 </div>
-
 <ul id="ko-context-hover-list" data-bind="template: { name: 'ko-context-hover-list-template', data: { hoverContext: ko.unwrap($root.targetElementKoData), hoverContextKeys: Object.keys(ko.unwrap($root.targetElementKoData)) } }"></ul>
+<!-- /ko -->
+<!-- ko if: $root.viewMode.settings -->
+<div id="ko-context-hover-configuration" data-bind="template: { name: 'ko-context-hover-configuration-template' }"></div>
+<!-- /ko -->
 
-<script type="text/html" id="ko-context-hover-list-template" class="display-none">	
-	<!-- ko foreach: { data: $data.hoverContextKeys } -->
-	<!-- ko let: { childrenNodes: ko.observable(), isObservableText: $root.checkObservableText(ko.unwrap($parent.hoverContext)[$data]), isObservableBoolean: $root.checkObservableBoolean(ko.unwrap($parent.hoverContext)[$data]), isInvokable: $root.checkDataInvokable(ko.unwrap($parent.hoverContext)[$data]), isFunction: $root.checkDataIsFunction(ko.unwrap($parent.hoverContext)[$data]) } -->
-	<li data-bind="hoverClass: 'ko-context-hover-item'">
-		<span class="chevron" data-bind="click: $context.isInvokable && $root.toggleNode.bind(null, $parent.hoverContext, $data, $context.childrenNodes), css: { 'chevron-uncollapsed': $context.isInvokable && ko.unwrap($context.childrenNodes), 'chevron-disabled': !$context.isInvokable } "></span>
-		<svg class="ko-context-hover-item-button ko-context-hover-item-button-console" data-bind="click: $root.consoleLogElementContext.bind(null, $parent.hoverContext, $data)"></svg>
-		<span class="ko-context-hover-item-descriptor" data-bind="text: $data + ':'"></span>
-		<!-- ko if: $context.isObservableText -->
-		<input class="ko-context-hover-item-editable" data-bind="value: ko.unwrap($parent.hoverContext)[$data]"/>
-		<!-- /ko -->
-		<!-- ko if: $context.isObservableBoolean -->
-		<label class="ko-context-hover-item-value" data-bind="attr: { 'for': $data + $index() }">
-			<input type="checkbox" class="ko-context-hover-item-toggleable" data-bind="checked: ko.unwrap($parent.hoverContext)[$data], attr: { 'id': $data + $index() }"/>
-			<span data-bind="text: $root.parseKnockoutValue(ko.unwrap($parent.hoverContext)[$data])"></span>
-		</label>
-		<!-- /ko -->
-		<!-- ko ifnot: $context.isObservableText || $context.isObservableBoolean -->
-		<span class="ko-context-hover-item-value" data-bind="text: $root.parseKnockoutValue(ko.unwrap($parent.hoverContext)[$data]), css: { 'ko-context-hover-item-descriptor-clickable': $context.isFunction }, click: $context.isFunction ? $root.executeFunction.bind(null, ko.unwrap($parent.hoverContext)[$data]) : undefined"></span>
-		<!-- /ko -->
-		<!-- ko if: $context.childrenNodes && $context.childrenNodes() -->
-		<ul data-bind="template: { name: 'ko-context-hover-list-template', data: { hoverContext: $context.childrenNodes, hoverContextKeys: Object.keys(ko.unwrap($context.childrenNodes)) } }"></ul>
-		<!-- /ko -->
-	</li>
-	<!-- /ko -->
-	<!-- /ko -->
+<script type="text/html" id="ko-context-hover-list-template" class="display-none">
+    <li data-bind="visible: !$data.hoverContextKeys || $data.hoverContextKeys.length === 0">- 0 KnockoutJS context keys for this element -</li>
+    <!-- ko foreach: { data: $data.hoverContextKeys } -->
+    <!-- ko let: { childrenNodes: ko.observable(), isDefined: $root.checkDataIsDefined(ko.unwrap($parent.hoverContext)[$data]), isText: $root.checkDataIsText(ko.unwrap($parent.hoverContext)[$data]), isNumber: $root.checkDataIsNumber(ko.unwrap($parent.hoverContext)[$data]), isBoolean: $root.checkDataIsBoolean(ko.unwrap($parent.hoverContext)[$data]), isInvokable: $root.checkDataIsInvokable(ko.unwrap($parent.hoverContext)[$data]), isFunction: $root.checkDataIsFunction(ko.unwrap($parent.hoverContext)[$data]) } -->
+    <li data-bind="hoverClass: 'ko-context-hover-item-hovered'">
+        <span class="chevron" data-bind="click: $context.isInvokable && $root.toggleNode.bind(null, $parent.hoverContext, $data, $context.childrenNodes), css: { 'chevron-uncollapsed': $context.isInvokable && ko.unwrap($context.childrenNodes) }, visibility: $context.isInvokable"></span>
+        <svg class="ko-context-hover-item-button icon-console" data-bind="click: $root.consoleLogElementContext.bind(null, $parent.hoverContext, $data)"></svg>
+        <span class="ko-context-hover-item-descriptor" data-bind="text: $data + ':'"></span>
+        <!-- ko if: !$context.isDefined || $context.isText -->
+        <input class="ko-context-hover-item-editable" data-bind="value: ko.unwrap($parent.hoverContext)[$data]" />
+        <!-- /ko -->
+        <!-- ko if: $context.isNumber -->
+        <input type="number" class="ko-context-hover-item-editable" data-bind="value: ko.unwrap($parent.hoverContext)[$data], event: { change: $root.enforceNumericInput.bind(null, ko.unwrap($parent.hoverContext)[$data]) }" />
+        <!-- /ko -->
+        <!-- ko if: $context.isBoolean -->
+        <label class="ko-context-hover-item-value" data-bind="attr: { 'for': $data + $index() }">
+            <input type="checkbox" class="ko-context-hover-item-toggleable" data-bind="checked: ko.unwrap($parent.hoverContext)[$data], attr: { 'id': $data + $index() }" />
+            <span data-bind="text: $root.parseKnockoutValue(ko.unwrap($parent.hoverContext)[$data])"></span>
+        </label>
+        <!-- /ko -->
+        <!-- ko if: $context.isDefined && !$context.isText && !$context.isBoolean && !$context.isNumber -->
+        <span class="ko-context-hover-item-value" data-bind="text: $root.parseKnockoutValue(ko.unwrap($parent.hoverContext)[$data]), css: { 'ko-context-hover-item-descriptor-clickable': $context.isFunction }, click: $context.isFunction ? $root.executeFunction.bind(null, ko.unwrap($parent.hoverContext)[$data]) : undefined"></span>
+        <!-- /ko -->
+        <!-- ko if: $parent.hoverContext && ko.unwrap($parent.hoverContext) && !isFunction -->
+        <span class="ko-context-hover-item-button icon-context-observable" data-bind="click: $root.coerceObservable.bind(null, ko.unwrap($parent.hoverContext), $data), css: { 'half-opacity': !ko.isObservable(ko.unwrap($parent.hoverContext)[$data]) }"></span>
+        <!-- /ko -->
+        <!-- ko if: $context.childrenNodes && $context.childrenNodes() -->
+        <ul data-bind="template: { name: 'ko-context-hover-list-template', data: { hoverContext: $context.childrenNodes, hoverContextKeys: Object.keys(ko.unwrap($context.childrenNodes)) } }"></ul>
+        <!-- /ko -->
+    </li>
+    <!-- /ko -->
+    <!-- /ko -->
 </script>
