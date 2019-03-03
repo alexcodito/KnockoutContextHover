@@ -1,5 +1,145 @@
-.chevron {
-    -ms-transform: rotate(-90deg);
+#ko-context-hover {
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    background-color: #fff;
+    border: 1px solid #b5b5b5;
+    max-height: 600px;
+    max-width: 800px;
+    overflow: hidden;
+    padding: 5px;
+    position: absolute;
+    white-space: nowrap;
+    z-index: 99999;
+    font-family: Verdana, sans-serif;
+    font-size: 11px;
+    line-height: 20px;
+    color: #333;
+    box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
+}
+
+    #ko-context-hover #ko-context-hover-list {
+        list-style: none;
+        margin: 0;
+        max-height: 500px;
+        overflow: scroll;
+        padding: 0;
+    }
+
+    #ko-context-hover #ko-context-hover-legend {
+        padding-bottom: 5px;
+        white-space: nowrap;
+    }
+
+    #ko-context-hover ul li {
+        background-color: #fff;
+        color: #000;
+        display: table;
+        font-size: 10pt;
+        padding: 3px;
+        width: 100%;
+    }
+
+        #ko-context-hover ul li ul {
+            padding-left: 10px;
+        }
+
+            #ko-context-hover ul li ul li {
+                list-style: none;
+            }
+
+    #ko-context-hover .ko-context-hover-item-hovered {
+        background-color: #add8e6 !important;
+    }
+
+    #ko-context-hover .ko-context-hover-item-descriptor {
+        font-weight: 700;
+        margin-right: 5px;
+        vertical-align: middle;
+    }
+
+    #ko-context-hover .ko-context-hover-item-editable {
+        vertical-align: middle;
+        line-height: 24px;
+        padding: 0 4px;
+    }
+
+    #ko-context-hover .ko-context-hover-item-toggleable {
+        vertical-align: middle;
+        line-height: 24px;
+        width: 13px;
+        height: 13px;
+        padding: 0 !important;
+        margin: 0 !important;
+        position: relative;
+        top: -1px;
+        overflow: hidden;
+    }
+
+    #ko-context-hover .ko-context-hover-item-descriptor-clickable {
+        color: #007a0e !important;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+
+    #ko-context-hover .ko-context-hover-item-button {
+        cursor: pointer;
+        margin: 0 3px;
+        display: inline-block;
+        vertical-align: sub;
+        height: 12px;
+        width: 12px;
+    }
+
+    #ko-context-hover .ko-context-hover-item-icon {
+        margin-right: 5px;
+        display: inline-block;
+        vertical-align: middle;
+        height: 12px;
+        width: 12px;
+    }
+
+    #ko-context-hover .ko-context-hover-item-value {
+        color: #000;
+        vertical-align: middle;
+    }
+
+    #ko-context-hover label.ko-context-hover-item-value {
+        display: inline-block;
+        padding-left: 15px;
+        text-indent: -15px;
+        margin: 0;
+    }
+
+.ko-context-hover-target-element {
+    box-shadow: 0 0 0 2pt red !important;
+}
+
+#ko-context-hover #ko-context-hover-target-element-info {
+    background-color: #000;
+    padding: 4px;
+    font-weight: bold;
+}
+
+#ko-context-hover #ko-context-hover-target-element-info-tag {
+    color: #00b7ff;
+}
+
+#ko-context-hover #ko-context-hover-target-element-info-name {
+    color: #ffffff;
+}
+
+#ko-context-hover #ko-context-hover-target-element-info-id {
+    color: #00ff1d;
+}
+
+#ko-context-hover #ko-context-hover-target-element-info-class-list {
+    color: #dd6cff;
+}
+
+/* Chevron */
+
+#ko-context-hover .chevron {
     -webkit-transform: rotate(-90deg);
     display: inline-block;
     height: 5px;
@@ -8,214 +148,120 @@
     transform: rotate(-90deg);
     vertical-align: middle;
     width: 10px;
+    cursor: pointer;
 }
 
-.chevron-uncollapsed {
-    -ms-transform: rotate(0);
+#ko-context-hover .chevron-uncollapsed {
     -webkit-transform: rotate(0);
     transform: rotate(0);
 }
 
-.chevron:before, .chevron:after {
+#ko-context-hover .chevron:before, .chevron:after {
     border: 5px solid transparent;
     content: "";
     display: block;
     position: absolute;
 }
 
-.chevron-disabled:before {
-    visibility: hidden;
-}
-
-.chevron:before {
-    border-top-color: #5B5B5B;
+#ko-context-hover .chevron:before {
     top: 0;
+    border-top-color: #5B5B5B;
 }
 
-.chevron:hover {
-    cursor: pointer;
-}
-
-    .chevron:hover:before {
-        border-top-color: #000;
-    }
-
-.chevron:after {
+#ko-context-hover .chevron:after {
     border-top-color: transparent;
     top: -2px;
 }
 
-#ko-context-hover {
-    -moz-border-radius: 4px;
-    -ms-border-radius: 3px;
-    -webkit-border-radius: 4px;
-    background-color: #fff;
-    border: 1px solid #b5b5b5;
-    border-radius: 3px;
-    max-height: 600px;
-    max-width: 800px;
-    overflow: hidden;
-    padding: 2px 5px 5px;
-    position: absolute;
+/* Utilities */
+
+.ko-context-hover-pill-group {
+    margin-right: 15px;
+    display: inline-block;
+    padding: 3px;
+}
+
+.ko-context-hover-pill-header {
+    vertical-align: middle;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.ko-context-hover-pill {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
     white-space: nowrap;
-    z-index: 99999;
-	font-family: Verdana,sans-serif;
-	font-size: 11px;
-	line-height: 24px;
-	color: #333;
+    vertical-align: middle;
+    cursor: pointer;
+    padding: 2px 6px;
+    font-size: 11px;
+    line-height: 1.4;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
-#ko-context-hover-list {
-    list-style: none;
-    margin: 0;
-    max-height: 500px;
-    overflow: scroll;
-    padding: 0;
-}
-
-.ko-context-hover-target-element {
-    box-shadow: 0 0 0 2pt red !important;
-}
-
-#ko-context-hover #toggle-legend {
-    border-bottom: 1px solid #D7D7D7;
-    margin-bottom: 5px;
-    padding-bottom: 5px;
-    white-space: normal;
-}
-
-#ko-context-hover #toggle-live-context {
-    display: inline-block;
-    margin-right: 10px;
-}
-
-#ko-context-hover #toggle-follow {
-    display: inline-block;
-}
-
-#ko-context-hover .toggle-live-context-key {
-    -moz-border-radius: 4px;
-    -ms-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    background-color: #0A0A0A;
-    border-radius: 4px;
+.ko-context-hover-pill-info {
     color: #fff;
-    display: inline-block;
-    font-size: 7pt;
-    padding: 0 4px;
-	line-height: 20px;
+    border: 1px solid #2e6da4;
+    background-color: #337ab7;
 }
 
-#ko-context-hover .toggle-live-context-key-description {
-    font-size: 8pt;
-    margin-left: 5px;
-}
-
-#ko-context-hover ul li {
-    background-color: #fff;
-    color: #000;
-    display: table;
-    font-size: 10pt;
-    padding: 2px 0 2px 2px;
-    width: 100%;
-}
-
-    #ko-context-hover ul li ul {
-        padding-left: 10px;
+    .ko-context-hover-pill-info:hover {
+        color: #fff;
+        background-color: #286090;
+        border-color: #204d74;
     }
 
-        #ko-context-hover ul li ul li {
-            list-style: none;
-        }
+    .ko-context-hover-pill-info:active {
+        color: #fff;
+        background-color: #286090;
+        background-image: none;
+        border-color: #204d74;
+        box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    }
 
-.ko-context-hover-item {
-    background-color: #add8e6 !important;
+.ko-context-hover-pill-default {
+    color: #333;
+    border: 1px solid #ccc;
+    background-color: #fff;
 }
 
-.ko-context-hover-item-descriptor {
-    font-weight: 700;
-    margin-right: 5px;
-    vertical-align: middle;
-}
+    .ko-context-hover-pill-default:hover {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+    }
 
-.ko-context-hover-item-editable {
-    vertical-align: middle;
-	line-height: 24px;
-	padding: 0 4px;
-}
+    .ko-context-hover-pill-default:active {
+        color: #333;
+        background-color: #e6e6e6;
+        background-image: none;
+        border-color: #adadad;
+        box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    }
 
-.ko-context-hover-item-toggleable {
-    vertical-align: middle;
-	line-height: 24px;
-	width: 13px;
-	height: 13px;
-	padding: 0 !important;
-	margin: 0 !important;
-	position: relative;
-	top: -1px;
-	overflow: hidden;
-}
-
-.ko-context-hover-item-descriptor-clickable {
-    color: #007a0e !important;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.ko-context-hover-item-button {
-    display: inline-block;
-    height: 12px;
-    margin-right: 5px;
-    vertical-align: middle;
-    width: 12px;
-}
-
-.ko-context-hover-item-button-console {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTI0IDB2MjRIMFYwaDI0ek0xMiAyMC44aDkuNnYtNC4zSDEydjQuM3ptLTkuMi0xLjNsOC01LjhWOS42bC04LTUuOHY0LjNMOCAxMS43bC01LjIgMy42djQuMnoiLz48L3N2Zz4=);
-}
-
-.ko-context-hover-item-value {
-    color: #000;
-    vertical-align: middle;
-}
-
-label.ko-context-hover-item-value {
-	display: inline-block;
-	padding-left: 15px;
-	text-indent: -15px;
-	margin: 0;
-}
-
-.ko-context-hover-item-button:hover {
-    -moz-box-shadow: 0 2px 3px rgba(0,0,0,.5);
-    -webkit-box-shadow: 0 2px 3px rgba(0,0,0,.5);
-    box-shadow: 0 2px 3px rgba(0,0,0,.5);
-    cursor: pointer;
-}
-
-#ko-context-hover-target-element {
-	background-color: #000;
-	padding: 0 4px 0 4px;
-	font-weight: bold;
-}
-
-#ko-context-hover-target-element-tag {
-	color: #00b7ff;
-}
-
-#ko-context-hover-target-element-name {
-	color: #ffffff;
-}
-
-#ko-context-hover-target-element-id {
-	color: #00ff1d;
-}
-
-#ko-context-hover-target-element-class-list {
-	color: #dd6cff;
-}
-
-.display-none {
+#ko-context-hover .display-none {
     display: none;
 }
 
+#ko-context-hover .half-opacity {
+    opacity: 0.5;
+}
+
+/* Icons */
+
+#ko-context-hover .icon-console {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTI0IDB2MjRIMFYwaDI0ek0xMiAyMC44aDkuNnYtNC4zSDEydjQuM3ptLTkuMi0xLjNsOC01LjhWOS42bC04LTUuOHY0LjNMOCAxMS43bC01LjIgMy42djQuMnoiLz48L3N2Zz4=);
+}
+
+#ko-context-hover .icon-context-observable {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiI+ICA8cGF0aCBkPSJNOS44LjRjMC0uMi0uMi0uNC0uNC0uNEg3LjljLS4yIDAtLjQuMi0uNC40djEuM2gyLjN6bS04LjMgM0MxLjUgNiAuMSA2LjQgMCAxMFYxMWMwIC41LjMuOS44LjlIM2MuNCAwIC44LS40LjgtLjlWN2guN1YyLjZIMi4yYy0uNCAwLS43LjQtLjcuOHptOSAwYzAtLjQtLjMtLjgtLjctLjhINy41djQuM2guOFYxMWMwIC41LjMuOS43LjloMi4zYy40IDAgLjctLjQuNy0uOVYxMGMwLTMuNS0xLjQtNC0xLjUtNi42ek00LjEgMEgyLjZjLS4yIDAtLjMuMi0uMy40djEuM2gyLjJWLjRjMC0uMi0uMi0uNC0uNC0uNHptMS4yIDYuOWgxLjVWMi42SDUuM3oiLz48L3N2Zz4=);
+}
+
+#ko-context-hover .arrows-cw {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTIiIHdpZHRoPSIxMiI+PHBhdGggZD0iTTEwLjg1IDcuMDN2LjA1UTEwLjQyIDguODIgOS4xIDkuOXEtMS4zMyAxLjA4LTMuMTEgMS4wOC0uOTUgMC0xLjg0LS4zNi0uODktLjM2LTEuNTktMS4wMmwtLjg0Ljg0cS0uMTIuMTItLjI5LjEyLS4xNyAwLS4zLS4xMi0uMTItLjEyLS4xMi0uM1Y3LjI1cTAtLjE3LjEzLS4zLjEyLS4xMi4yOS0uMTJoMi45MnEuMTcgMCAuMjkuMTMuMTIuMTIuMTIuMjkgMCAuMTctLjEyLjNsLS45Ljg5cS40Ny40MiAxLjA2LjY2LjU4LjIzIDEuMjEuMjMuODggMCAxLjYzLS40Mi43Ni0uNDIgMS4yMS0xLjE2LjA3LS4xMi4zNS0uNzcuMDUtLjE1LjItLjE1aDEuMjRxLjA5IDAgLjE1LjA3LjA2LjA2LjA2LjE0em0uMTYtNS4ydjIuOTFxMCAuMTctLjEyLjMtLjEyLjEyLS4zLjEySDcuNjlxLS4xNyAwLS4zLS4xMy0uMTItLjEyLS4xMi0uMjkgMC0uMTcuMTMtLjNsLjktLjlRNy4zMiAyLjY3IDYgMi42N3EtLjg3IDAtMS42Mi40Mi0uNzYuNDItMS4yMSAxLjE3LS4wOC4xLS4zNS43Ni0uMDUuMTUtLjIuMTVoLTEuM3EtLjA4IDAtLjE0LS4wNi0uMDYtLjA3LS4wNi0uMTVWNC45cS40Mi0xLjc0IDEuNzYtMi44M1E0LjIyIDEgNiAxcS45NSAwIDEuODUuMzYuOS4zNiAxLjYgMS4wMmwuODQtLjg0cS4xMy0uMTIuMy0uMTIuMTcgMCAuMjkuMTIuMTIuMTIuMTIuM3oiIGZpbGw9IiNmZmYiLz48L3N2Zz4=);}
