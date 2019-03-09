@@ -171,8 +171,20 @@ var KoContextVm = function (ko) {
 		var tempY = e.clientY;
 
 		if (!self.settings.koContextHoverFollowCursorHalted()) {
-			koContextHoverElement.style.left = tempX + 5 + "px";
-			koContextHoverElement.style.top = tempY + document.documentElement.scrollTop + 15 + "px";
+			
+			if (tempX > window.document.body.clientWidth / 2) {
+				// Invert the direction of the panel's location offset when the mouse pointer is on the right part of the screen
+				koContextHoverElement.style.left = tempX - koContextHoverElement.clientWidth - 5 + "px";
+			} else {
+				koContextHoverElement.style.left = tempX + 5 + "px";
+			}
+
+			if (tempY > window.document.body.clientHeight / 2) {
+				// Invert the direction of the panel's location offset when the mouse pointer is on the bottom part of the screen
+				koContextHoverElement.style.top = tempY + document.documentElement.scrollTop - koContextHoverElement.clientHeight - 15 + "px";
+			} else {
+				koContextHoverElement.style.top = tempY + document.documentElement.scrollTop + 15 + "px";
+			}
 		}
 
 		if (self.settings.koContextHoverHalted()) {
