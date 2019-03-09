@@ -201,6 +201,7 @@ var KoContextVm = function (ko) {
 	self.targetElementAttributes = ko.observable();
 	self.targetElementKoData = ko.observable({});
 	self.parseKnockoutValue = parseKnockoutValue;
+	self.refreshTargetElementKoData = refreshTargetElementKoData;
 
 	self.viewMode = {
 
@@ -242,11 +243,13 @@ var KoContextVm = function (ko) {
 		koContextHoverHalted: ko.observable(false),
 		koContextHoverFollowCursorHalted: ko.observable(false),
 
-		set: function (setting, value) {
+		set: function (setting, value, callback) {
 
 			if (setting && ko.isObservable(setting)) {
 				setting(value);
 			}
+
+			return callback && callback();
 
 		}
 

@@ -10,7 +10,7 @@
     <div class="ko-context-hover-pill-group">
         <span class="ko-context-hover-pill-header">Scope</span>
         <!-- ko foreach: $root.ref.scopes -->
-        <span class="ko-context-hover-pill" data-bind="text: name, click: $root.settings.set.bind(null, $root.settings.rootScope, $data), css: { 'ko-context-hover-pill-default': $root.settings.rootScope().name !== name, 'ko-context-hover-pill-info': $root.settings.rootScope().name === name }"></span>
+        <span class="ko-context-hover-pill" data-bind="text: name, click: $root.settings.set.bind(null, $root.settings.rootScope, $data, $root.refreshTargetElementKoData), css: { 'ko-context-hover-pill-default': $root.settings.rootScope().name !== name, 'ko-context-hover-pill-info': $root.settings.rootScope().name === name }"></span>
         <!-- /ko -->
     </div>
     <div class="ko-context-hover-pill-group">
