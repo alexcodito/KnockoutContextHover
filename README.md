@@ -2,14 +2,16 @@
 Browser extension for KnockoutJS development and debugging
 
 <p align="center">
-  <img src="https://i.imgur.com/dCJ2W68.png" width="450" alt="KO Context Hover Screenshot 1">  
-  <img src="https://i.imgur.com/Qo9kDWW.png" width="450" alt="KO Context Hover Screenshot 2">
-    <img src="https://i.imgur.com/JBRv7j3.png" width="650" alt="KO Context Hover Screenshot 3">
+  <img src="https://imgur.com/sMCpeb7.png" width="800" alt="KO Context Hover Screenshot 1"> 
+  <img src="https://imgur.com/jOX3QEP.png" width="800" alt="KO Context Hover Screenshot 2">
+  <img src="https://imgur.com/t2RcppJ.png" width="800" alt="KO Context Hover Screenshot 3">
 </p>
 
 - Display the hovered element's KnockoutJS context, HTML tag and attributes 
 - Traverse complex objects and arrays
-- Edit observable strings and toggle observable booleans
-- Unwrap and then console.log objects straight into Dev tools
+- Set values of variables and observables
+- Convert variables into observables
+- Refresh hovered element's KO bindings
+- Console.log context objects straight into Dev tools
 - Shortcuts for following the mouse cursor & toggling live context
 - Click and execute a function
