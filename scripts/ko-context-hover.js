@@ -265,14 +265,14 @@ var KoContextVm = function (ko) {
 
 		set: function (setting, value, callback) {
 
-            if (setting && ko.isObservable(setting)) {
-                setting(value);
-            }
+			if (ko.isWriteableObservable(setting)) {
+				setting(value);
+			}
 
-            return callback && callback();
+			return typeof callback === 'function' && callback();
 
-        }
-        
+		}
+
 	};
 
 	self.consoleLogElementContext = function (hoverContext, data) {
