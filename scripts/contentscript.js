@@ -58,9 +58,8 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback) {
 
 				if (status === 200) {
 
-					runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.let.js');
-					runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.hoverClass.js');
-					runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.visibility.js');
+                    runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.let.js');
+                    runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.hoverClass.js');
 					runScriptInPageScope('scripts/ko-context-hover.js');
 
 				}
