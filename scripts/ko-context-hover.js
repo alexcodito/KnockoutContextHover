@@ -88,6 +88,8 @@ var KoContextVm = function (ko) {
 
 		if (targetElement !== undefined && targetElement !== null) {
 
+            var classListFormatted = "";
+            var classList = Array.from(targetElement.classList);
 			var newContext = self.settings.rootScope().action(targetElement);
 
 			if (newContext === undefined || newContext === null) {
@@ -96,12 +98,18 @@ var KoContextVm = function (ko) {
 				self.targetElementKoData(newContext);
 			}
 
+            if (Array.isArray(classList)) {
+
+                classListFormatted = classList.map(function (className) { return ' .' + className; });
+
+            }
+
 			self.targetElementAttributes({
 
 				tagName: targetElement.tagName,
 				name: targetElement.name,
 				id: targetElement.id,
-				classList: Array.map(targetElement.classList, function (className) { return ' .' + className; })
+                classList: classListFormatted
 
 			});
 
@@ -257,14 +265,14 @@ var KoContextVm = function (ko) {
 
 		set: function (setting, value, callback) {
 
-			if (setting && ko.isObservable(setting)) {
-				setting(value);
-			}
+            if (setting && ko.isObservable(setting)) {
+                setting(value);
+            }
 
-			return callback && callback();
+            return callback && callback();
 
-		}
-
+        }
+        
 	};
 
 	self.consoleLogElementContext = function (hoverContext, data) {
@@ -401,7 +409,6 @@ var KoContextVm = function (ko) {
 	}
 
 	var koContextVm = new KoContextVm(ko);
-
 	var koContextHoverElement = document.getElementById("ko-context-hover");
 	var koContextHoverListElement = document.getElementById("ko-context-hover-list");
 
