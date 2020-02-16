@@ -38,9 +38,9 @@
 <script type="text/html" id="ko-context-hover-list-template" class="display-none">
     <li data-bind="visible: !$data.hoverContextKeys || $data.hoverContextKeys.length === 0">- 0 KnockoutJS context keys for this element -</li>
     <!-- ko foreach: { data: $data.hoverContextKeys } -->
-    <!-- ko let: { childrenNodes: ko.observable(), isDefined: $root.checkDataIsDefined(ko.unwrap($parent.hoverContext)[$data]), isText: $root.checkDataIsText(ko.unwrap($parent.hoverContext)[$data]), isNumber: $root.checkDataIsNumber(ko.unwrap($parent.hoverContext)[$data]), isBoolean: $root.checkDataIsBoolean(ko.unwrap($parent.hoverContext)[$data]), isInvokable: $root.checkDataIsInvokable(ko.unwrap($parent.hoverContext)[$data]), isFunction: $root.checkDataIsFunction(ko.unwrap($parent.hoverContext)[$data]) } -->
-    <li data-bind="hoverClass: 'ko-context-hover-item-hovered'">
-        <span class="chevron" data-bind="click: $context.isInvokable && $root.toggleNode.bind(null, $parent.hoverContext, $data, $context.childrenNodes), css: { 'chevron-uncollapsed': $context.isInvokable && ko.unwrap($context.childrenNodes) }, visibility: $context.isInvokable"></span>
+    <!-- ko kchLet: { childrenNodes: ko.observable(), isDefined: $root.checkDataIsDefined(ko.unwrap($parent.hoverContext)[$data]), isText: $root.checkDataIsText(ko.unwrap($parent.hoverContext)[$data]), isNumber: $root.checkDataIsNumber(ko.unwrap($parent.hoverContext)[$data]), isBoolean: $root.checkDataIsBoolean(ko.unwrap($parent.hoverContext)[$data]), isInvokable: $root.checkDataIsInvokable(ko.unwrap($parent.hoverContext)[$data]), isFunction: $root.checkDataIsFunction(ko.unwrap($parent.hoverContext)[$data]) } -->
+    <li data-bind="kchHoverClass: 'ko-context-hover-item-hovered'">
+        <span class="chevron" data-bind="click: $context.isInvokable && $root.toggleNode.bind(null, $parent.hoverContext, $data, $context.childrenNodes), css: { 'chevron-uncollapsed': $context.isInvokable && ko.unwrap($context.childrenNodes) }, style: { visibility: ko.unwrap($context.isInvokable) ? 'visible' : 'hidden' }"></span>
         <svg class="ko-context-hover-item-button icon-console" data-bind="click: $root.consoleLogElementContext.bind(null, $parent.hoverContext, $data)"></svg>
         <span class="ko-context-hover-item-descriptor" data-bind="text: $data + ':'"></span>
         <!-- ko if: !$context.isDefined || $context.isText -->

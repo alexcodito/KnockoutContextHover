@@ -33,8 +33,8 @@
     "icons/log.svg",
     "markup/panel.html",
     "scripts/ko-context-hover.js",
-    "reference-binding-handlers/ko.bindingHandlers.hoverClass.js",
-    "reference-binding-handlers/ko.bindingHandlers.let.js"
+    "reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js",
+    "reference-binding-handlers/ko.bindingHandlers.kchLet.js"
   ],
 
   "applications": {
