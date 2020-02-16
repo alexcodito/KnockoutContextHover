@@ -2,7 +2,7 @@
   // "about": "Log icon was made by Freepik from www.flaticon.com",
   "name": "ko-context-hover",
   "description": "KnockoutJS Context Hover - Development and debugging assistant for Knockout JS",
-  "version": "1.0",
+  "version": "1.5",
   "manifest_version": 2,
   "author": "Alexandros Papounidis",
   "icons": {
