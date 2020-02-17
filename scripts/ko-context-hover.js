@@ -497,4 +497,4 @@ var KoContextVm = function (ko) {
 
 	ko.applyBindings(koContextVm, koContextHoverElement);
 
-})(window.ko || this.ko || ko);
+})(window.ko || this.ko);
