@@ -5,15 +5,18 @@ var KoContextVm = function (ko) {
 		return undefined;
 	}
 
-	var self = this;
-	var targetElement;
-
+    var self = this;
+    var targetElement;
 	var koContextHoverElement = document.getElementById('ko-context-hover');
 	var koContextHoverListElement = document.getElementById('ko-context-hover-list');
 
 	if (!koContextHoverElement || !koContextHoverListElement) {
 		return undefined;
 	}
+
+    var truncate = function (str, max) {
+        return str.length > max ? str.substr(0, max - 4) + " ..." : str;
+    };
 
 	var reapplyNodeBindings = function (element) {
 
@@ -33,10 +36,6 @@ var KoContextVm = function (ko) {
 
 		var ret = undefined;
 		depth = depth || 1;
-
-		var truncate = function (str, max) {
-			return str.length > max ? str.substr(0, max - 4) + " ..." : str;
-		};
 
 		if (item) {
 
@@ -86,11 +85,10 @@ var KoContextVm = function (ko) {
 
 	var refreshTargetElementKoData = function () {
 
-		if (targetElement !== undefined && targetElement !== null) {
+        if (targetElement) {
 
-            var classListFormatted = "";
-            var classList = Array.from(targetElement.classList);
-			var newContext = self.settings.rootScope().action(targetElement);
+            var classList = [];
+            var newContext = self.settings.rootScope().action(targetElement);
 
 			if (newContext === undefined || newContext === null) {
 				self.targetElementKoData({});
@@ -98,18 +96,17 @@ var KoContextVm = function (ko) {
 				self.targetElementKoData(newContext);
 			}
 
-            if (Array.isArray(classList)) {
-
-                classListFormatted = classList.map(function (className) { return ' .' + className; });
-
+            if (targetElement.classList && targetElement.classList.forEach) {
+                targetElement.classList.forEach(x => { if (!x.startsWith('ko-context-hover')) { classList.push('.' + x) } });
             }
 
 			self.targetElementAttributes({
 
-				tagName: targetElement.tagName,
-				name: targetElement.name,
-				id: targetElement.id,
-                classList: classListFormatted
+                tagName: targetElement.tagName,
+                childElementCount: targetElement.childElementCount || 0,
+                name: targetElement.name ? truncate(targetElement.name, 30) : undefined,
+                id: targetElement.id ? truncate(targetElement.id, 30) : undefined,
+                classList: classList ? truncate(classList.join(' '), 50) : undefined
 
 			});
 
@@ -126,8 +123,8 @@ var KoContextVm = function (ko) {
 
 			document.removeEventListener('keydown', handleKeyDown);
 
-			if (targetElement) {
-				targetElement.classList.remove("ko-context-hover-target-element");
+            if (targetElement && targetElement.classList) {
+                targetElement.classList.remove("ko-context-hover-target-element");
 			}
 
 			return;
@@ -143,6 +140,26 @@ var KoContextVm = function (ko) {
 
 	};
 
+    var selectTargetElement = function (newTargetElement) {
+
+        if (newTargetElement && targetElement !== newTargetElement) {
+
+            if (targetElement && targetElement.classList) {
+                targetElement.classList.remove("ko-context-hover-target-element");
+            }
+            
+            if (newTargetElement && newTargetElement.classList) {
+                newTargetElement.classList.add("ko-context-hover-target-element");
+            }
+
+            targetElement = newTargetElement;
+
+            refreshTargetElementKoData();
+        }
+
+
+    }
+
 	var handleMouseMove = function (e) {
 
 		var koContextHover = document.getElementById("ko-context-hover");
@@ -151,8 +168,8 @@ var KoContextVm = function (ko) {
 
 			document.removeEventListener('mousemove', handleMouseMove);
 
-			if (targetElement) {
-				targetElement.classList.remove("ko-context-hover-target-element");
+            if (targetElement && targetElement.classList) {
+                targetElement.classList.remove("ko-context-hover-target-element");
 			}
 
 			return;
@@ -201,18 +218,7 @@ var KoContextVm = function (ko) {
 
 		var newTargetElement = document.elementFromPoint(tempX, tempY);
 
-		if (newTargetElement && targetElement !== newTargetElement) {
-
-			if (targetElement) {
-				targetElement.classList.remove("ko-context-hover-target-element");
-			}
-
-			newTargetElement.classList.add("ko-context-hover-target-element");
-
-			targetElement = newTargetElement;
-
-			refreshTargetElementKoData();
-		}
+        selectTargetElement(newTargetElement);
 	};
 
 	document.addEventListener('keydown', handleKeyDown);
@@ -230,7 +236,7 @@ var KoContextVm = function (ko) {
 		set: function (targetViewMode) {
 
 			for (viewMode in self.viewMode) {
-				if (self.viewMode.hasOwnProperty(viewMode) && ko.isObservable(self.viewMode[viewMode])) {
+				if (ko.isWriteableObservable(self.viewMode[viewMode])) {
 					self.viewMode[viewMode](false);
 				}
 			}
@@ -291,21 +297,78 @@ var KoContextVm = function (ko) {
 
 	};
 
-	self.toggleNode = function (hoverContext, property, childrenNodes) {
+    self.toggleNode = function (hoverContext, property, childrenNodes) {
+
 		if (childrenNodes()) {
 			childrenNodes(undefined);
 		} else {
 			childrenNodes(ko.unwrap(ko.unwrap(hoverContext)[property]));
-		}
+        }
+
 	};
 
-	self.reapplyTargetElementBindings = function () {
-		reapplyNodeBindings(targetElement);
-		refreshTargetElementKoData();
+    self.reapplyTargetElementBindings = function () {
+                
+        if (targetElement !== null) {
+            reapplyNodeBindings(targetElement);
+            refreshTargetElementKoData();
+        }		
+
+	};
+    
+    self.targetPreviousElement = function () {
+                
+        if (targetElement !== null) {
+
+            var newTargetElement;
+
+            if (targetElement.previousSibling !== null) {
+                newTargetElement = targetElement.previousSibling;
+            }
+            else if (targetElement.parentNode !== null) {
+                newTargetElement = targetElement.parentNode;
+            }
+
+            if (newTargetElement !== null) {
+                selectTargetElement(newTargetElement);
+            }
+
+        }
+
+	};
+    
+    self.targetNextElement = function (traverseChild) {
+        
+        if (targetElement !== null) {
+
+            var newTargetElement;
+
+            if (traverseChild === true && targetElement.firstChild !== null) {
+                // Scope to first child node
+                newTargetElement = targetElement.firstChild;
+            } else if (traverseChild === false) {                
+                if (targetElement.nextSibling !== null) {
+                    // Scope to next node
+                    newTargetElement = targetElement.nextSibling;
+                } else {
+                    // Attempt to scope to the parent and then the next node
+                    newTargetElement = targetElement.parentNode;
+                    if (newTargetElement && newTargetElement.nextSibling) {
+                        newTargetElement = targetElement.nextSibling;
+                    }
+                }
+            }
+
+            if (newTargetElement !== null) {
+                selectTargetElement(newTargetElement);
+            }
+            
+        }
+
 	};
 
-	self.coerceObservable = function (data, prop) {
-
+    // Turn a regular property into an observable.
+    self.coerceObservable = function (data, prop) {
 		if (!ko.isObservable(data[prop])) {
 
 			if (Array.isArray(data[prop])) {
@@ -314,10 +377,10 @@ var KoContextVm = function (ko) {
 				data[prop] = ko.observable(data[prop]);
 			}
 
-			if (targetElement && targetElement['attributes'] && targetElement['attributes']['data-bind']) {
+            if (targetElement && targetElement.attributes && targetElement.attributes['data-bind']) {
 
-				// Todo: Handle existing ko.unwrap() and explicit unwrapping.
-				targetElement['attributes']['data-bind'].value = targetElement['attributes']['data-bind'].value.replace(prop, prop + '()');
+                // Todo: Handle existing ko.unwrap() and explicit unwrapping.
+                targetElement.attributes['data-bind'].value = targetElement.attributes['data-bind'].value.replace(prop, prop + '()');
 
 				self.reapplyTargetElementBindings();
 			}
@@ -328,7 +391,7 @@ var KoContextVm = function (ko) {
 
 	self.enforceNumericInput = function (data) {
 
-		if (ko.isObservable(data)) {
+		if (ko.isWriteableObservable(data)) {
 			data(parseInt(data(), 10));
 		} else {
 			data = parseInt(data, 10);
@@ -360,7 +423,7 @@ var KoContextVm = function (ko) {
 
 		var uData = ko.unwrap(data);
 
-		return uData !== undefined && uData !== null && typeof uData === "function";
+		return typeof uData === "function";
 
 	};
 
@@ -368,7 +431,7 @@ var KoContextVm = function (ko) {
 
 		var uData = ko.unwrap(data);
 
-		return uData !== undefined && uData !== null && typeof uData === "string";
+		return typeof uData === "string";
 
 	};
 
@@ -376,7 +439,7 @@ var KoContextVm = function (ko) {
 
 		var uData = ko.unwrap(data);
 
-		return uData !== undefined && uData !== null && typeof uData === "number";
+		return typeof uData === "number";
 
 	};
 
@@ -384,7 +447,7 @@ var KoContextVm = function (ko) {
 
 		var uData = ko.unwrap(data);
 
-		return uData !== undefined && uData !== null && typeof uData === "boolean";
+		return typeof uData === "boolean";
 
 	};
 
@@ -392,7 +455,7 @@ var KoContextVm = function (ko) {
 
 		var uData = ko.unwrap(data);
 
-		if (uData && typeof uData === "function") {
+		if (typeof uData === "function") {
 			console.log(uData());
 		}
 
@@ -408,6 +471,22 @@ var KoContextVm = function (ko) {
 		return;
 	}
 
+    // Polyfill for ko.unwrap
+    if (ko.utils && typeof ko.unwrap !== 'function') {
+        ko.unwrap = ko.utils.unwrapObservable;
+    }
+
+    if (window.ko && !ko.bindingHandlers.kchLog) {
+        ko.bindingHandlers.kchLog = {
+            init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+                var logName = element.name || element.id;
+                console.log((logName || 'Log') + ':', ko.unwrap(valueAccessor()));
+            }
+        };
+
+        ko.virtualElements.allowedBindings.kchLog = true;
+    }
+
 	var koContextVm = new KoContextVm(ko);
 	var koContextHoverElement = document.getElementById("ko-context-hover");
 	var koContextHoverListElement = document.getElementById("ko-context-hover-list");
@@ -418,4 +497,4 @@ var KoContextVm = function (ko) {
 
 	ko.applyBindings(koContextVm, koContextHoverElement);
 
-})(window.ko || ko);
+})(window.ko || this.ko || ko);

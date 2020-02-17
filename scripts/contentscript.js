@@ -56,13 +56,16 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback) {
 		loadHtml(chrome.extension.getURL("markup/panel.html"), contextHoverPanel,
 			function (status) {
 
-				if (status === 200) {
+                if (status === 200) {
 
-					runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.kchLet.js');
-					runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js');
-					runScriptInPageScope('scripts/ko-context-hover.js');
+                    // Load custom binding handlers and the main script
+                    runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.kchLet.js');
+                    runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js');
+                    runScriptInPageScope('scripts/ko-context-hover.js');
 
-				}
+                } else {
+                    console.log('Failed to load markup for the \'knockout-context-hover\' browser extension.')
+                }
 
 			});
 

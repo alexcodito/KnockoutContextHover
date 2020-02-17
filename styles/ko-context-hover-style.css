@@ -1,3 +1,10 @@
+#ko-context-hover * {
+    font-family: Verdana, sans-serif !important;
+    font-size: 11px !important;
+    box-sizing: border-box;
+    all: revert;
+}
+
 #ko-context-hover {
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -10,10 +17,10 @@
     padding: 5px;
     position: absolute;
     white-space: nowrap;
-    z-index: 99999;
-    font-family: Verdana, sans-serif;
-    font-size: 11px;
+    font-family: Verdana, sans-serif !important;
+    font-size: 11px !important;
     line-height: 20px;
+    z-index: 99999 !important;
     color: #333;
     box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
 }
@@ -27,7 +34,8 @@
     }
 
     #ko-context-hover #ko-context-hover-legend {
-        padding-bottom: 5px;
+        background: #EFEFEF;
+        padding-left: 5px;
         white-space: nowrap;
     }
 
@@ -35,7 +43,7 @@
         background-color: #fff;
         color: #000;
         display: table;
-        font-size: 10pt;
+        font-size: 10pt !important;
         padding: 3px;
         width: 100%;
     }
@@ -60,7 +68,7 @@
 
     #ko-context-hover .ko-context-hover-item-editable {
         vertical-align: middle;
-        line-height: 24px;
+        line-height: 22px;
         padding: 0 4px;
     }
 
@@ -116,26 +124,64 @@
 }
 
 #ko-context-hover #ko-context-hover-target-element-info {
-    background-color: #000;
+    background-color: #232323;
     padding: 4px;
     font-weight: bold;
 }
 
 #ko-context-hover #ko-context-hover-target-element-info-tag {
+    margin-left: 5px;
     color: #00b7ff;
 }
 
 #ko-context-hover #ko-context-hover-target-element-info-name {
+    margin-left: 5px;
     color: #ffffff;
 }
 
 #ko-context-hover #ko-context-hover-target-element-info-id {
+    margin-left: 5px;
     color: #00ff1d;
 }
 
 #ko-context-hover #ko-context-hover-target-element-info-class-list {
+    margin-left: 5px;
     color: #dd6cff;
 }
+
+#ko-context-hover .ko-context-hover-toggle-button {
+    cursor: pointer;
+    box-sizing: border-box !important;
+    background: #fff;
+    border-radius: 4px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    padding: 1px 0px 0px 1px;
+    width: 14px;
+    height: 14px;
+    vertical-align: middle;
+}
+
+    #ko-context-hover .ko-context-hover-toggle-button.active {
+        border: 1px solid #5b9abf;
+    }
+
+        #ko-context-hover .ko-context-hover-toggle-button.active:after {
+            content: ' ';
+            background: #337ab7;
+            border-radius: 12px;
+            display: block;
+            width: 10px;
+            height: 10px;
+        }
+
+        #ko-context-hover .ko-context-hover-toggle-button.active:hover:after {
+            background: #286090;
+        }
+
+        #ko-context-hover .ko-context-hover-toggle-button.active:active:after {
+            box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+        }
 
 /* Chevron */
 
@@ -175,19 +221,23 @@
 
 /* Utilities */
 
-.ko-context-hover-pill-group {
+#ko-context-hover .ko-context-hover-small {
+    font-size: 9px !important;
+}
+
+#ko-context-hover .ko-context-hover-pill-group {
     margin-right: 15px;
     display: inline-block;
     padding: 3px;
 }
 
-.ko-context-hover-pill-header {
+#ko-context-hover .ko-context-hover-pill-header {
     vertical-align: middle;
     display: inline-block;
     font-weight: bold;
 }
 
-.ko-context-hover-pill {
+#ko-context-hover .ko-context-hover-pill {
     display: inline-block;
     font-weight: 400;
     text-align: center;
@@ -195,7 +245,7 @@
     vertical-align: middle;
     cursor: pointer;
     padding: 2px 6px;
-    font-size: 11px;
+    font-size: 11px !important;
     line-height: 1.4;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -205,19 +255,19 @@
     user-select: none;
 }
 
-.ko-context-hover-pill-info {
+#ko-context-hover .ko-context-hover-pill-info {
     color: #fff;
     border: 1px solid #2e6da4;
     background-color: #337ab7;
 }
 
-    .ko-context-hover-pill-info:hover {
+    #ko-context-hover .ko-context-hover-pill-info:hover {
         color: #fff;
         background-color: #286090;
         border-color: #204d74;
     }
 
-    .ko-context-hover-pill-info:active {
+    #ko-context-hover .ko-context-hover-pill-info:active {
         color: #fff;
         background-color: #286090;
         background-image: none;
@@ -225,21 +275,29 @@
         box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
     }
 
-.ko-context-hover-pill-default {
+#ko-context-hover .ko-context-hover-pill-default {
     color: #333;
     border: 1px solid #ccc;
     background-color: #fff;
 }
 
-    .ko-context-hover-pill-default:hover {
+    #ko-context-hover .ko-context-hover-pill-default:hover {
         color: #333;
         background-color: #e6e6e6;
         border-color: #adadad;
     }
 
-    .ko-context-hover-pill-default:active {
+    #ko-context-hover .ko-context-hover-pill-default:active {
         color: #333;
         background-color: #e6e6e6;
+        background-image: none;
+        border-color: #adadad;
+        box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    }
+
+    #ko-context-hover .ko-context-hover-pill-default:disabled {
+        color: #333;
+        opacity: 0.75;
         background-image: none;
         border-color: #adadad;
         box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
@@ -264,4 +322,5 @@
 }
 
 #ko-context-hover .arrows-cw {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTIiIHdpZHRoPSIxMiI+PHBhdGggZD0iTTEwLjg1IDcuMDN2LjA1UTEwLjQyIDguODIgOS4xIDkuOXEtMS4zMyAxLjA4LTMuMTEgMS4wOC0uOTUgMC0xLjg0LS4zNi0uODktLjM2LTEuNTktMS4wMmwtLjg0Ljg0cS0uMTIuMTItLjI5LjEyLS4xNyAwLS4zLS4xMi0uMTItLjEyLS4xMi0uM1Y3LjI1cTAtLjE3LjEzLS4zLjEyLS4xMi4yOS0uMTJoMi45MnEuMTcgMCAuMjkuMTMuMTIuMTIuMTIuMjkgMCAuMTctLjEyLjNsLS45Ljg5cS40Ny40MiAxLjA2LjY2LjU4LjIzIDEuMjEuMjMuODggMCAxLjYzLS40Mi43Ni0uNDIgMS4yMS0xLjE2LjA3LS4xMi4zNS0uNzcuMDUtLjE1LjItLjE1aDEuMjRxLjA5IDAgLjE1LjA3LjA2LjA2LjA2LjE0em0uMTYtNS4ydjIuOTFxMCAuMTctLjEyLjMtLjEyLjEyLS4zLjEySDcuNjlxLS4xNyAwLS4zLS4xMy0uMTItLjEyLS4xMi0uMjkgMC0uMTcuMTMtLjNsLjktLjlRNy4zMiAyLjY3IDYgMi42N3EtLjg3IDAtMS42Mi40Mi0uNzYuNDItMS4yMSAxLjE3LS4wOC4xLS4zNS43Ni0uMDUuMTUtLjIuMTVoLTEuM3EtLjA4IDAtLjE0LS4wNi0uMDYtLjA3LS4wNi0uMTVWNC45cS40Mi0xLjc0IDEuNzYtMi44M1E0LjIyIDEgNiAxcS45NSAwIDEuODUuMzYuOS4zNiAxLjYgMS4wMmwuODQtLjg0cS4xMy0uMTIuMy0uMTIuMTcgMCAuMjkuMTIuMTIuMTIuMTIuM3oiIGZpbGw9IiNmZmYiLz48L3N2Zz4=);}
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMTIiIHdpZHRoPSIxMiI+PHBhdGggZD0iTTEwLjg1IDcuMDN2LjA1UTEwLjQyIDguODIgOS4xIDkuOXEtMS4zMyAxLjA4LTMuMTEgMS4wOC0uOTUgMC0xLjg0LS4zNi0uODktLjM2LTEuNTktMS4wMmwtLjg0Ljg0cS0uMTIuMTItLjI5LjEyLS4xNyAwLS4zLS4xMi0uMTItLjEyLS4xMi0uM1Y3LjI1cTAtLjE3LjEzLS4zLjEyLS4xMi4yOS0uMTJoMi45MnEuMTcgMCAuMjkuMTMuMTIuMTIuMTIuMjkgMCAuMTctLjEyLjNsLS45Ljg5cS40Ny40MiAxLjA2LjY2LjU4LjIzIDEuMjEuMjMuODggMCAxLjYzLS40Mi43Ni0uNDIgMS4yMS0xLjE2LjA3LS4xMi4zNS0uNzcuMDUtLjE1LjItLjE1aDEuMjRxLjA5IDAgLjE1LjA3LjA2LjA2LjA2LjE0em0uMTYtNS4ydjIuOTFxMCAuMTctLjEyLjMtLjEyLjEyLS4zLjEySDcuNjlxLS4xNyAwLS4zLS4xMy0uMTItLjEyLS4xMi0uMjkgMC0uMTcuMTMtLjNsLjktLjlRNy4zMiAyLjY3IDYgMi42N3EtLjg3IDAtMS42Mi40Mi0uNzYuNDItMS4yMSAxLjE3LS4wOC4xLS4zNS43Ni0uMDUuMTUtLjIuMTVoLTEuM3EtLjA4IDAtLjE0LS4wNi0uMDYtLjA3LS4wNi0uMTVWNC45cS40Mi0xLjc0IDEuNzYtMi44M1E0LjIyIDEgNiAxcS45NSAwIDEuODUuMzYuOS4zNiAxLjYgMS4wMmwuODQtLjg0cS4xMy0uMTIuMy0uMTIuMTcgMCAuMjkuMTIuMTIuMTIuMTIuM3oiIGZpbGw9IiNmZmYiLz48L3N2Zz4=);
+}
