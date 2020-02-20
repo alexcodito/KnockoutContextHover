@@ -1,8 +1,8 @@
-function runScriptInPageScope(scriptPath) {
+async function runScriptInPageScope(scriptPath) {
 
-	var script = document.createElement('script');
+    let script = document.createElement('script');
 	script.setAttribute("type", "text/javascript");
-	script.setAttribute("src", chrome.extension.getURL(scriptPath));
+    script.setAttribute("src", await chrome.runtime.getURL(scriptPath));
 
 	script.onload = function () {
 		this.remove();
@@ -12,34 +12,25 @@ function runScriptInPageScope(scriptPath) {
 
 }
 
-function loadHtml(url, element, callback) {
+async function loadHtml(url, element, callback) {
 
-	var request = new XMLHttpRequest();
+    const request = await fetch(url);
 
-	request.onreadystatechange = function () {
-		if (this.status === 200) {
+    if (element && request.status === 200) {
+        element.innerHTML = await request.text();
+    }
 
-			if (element) {
-				element.innerHTML = request.responseText;
-			}
-
-			if (callback && typeof callback === "function") {
-				callback(this.status);
-			}
-
-		}
-	};
-
-	request.open("GET", url, false);
-	request.send(null);
+    if (typeof callback === "function") {
+        callback(request.status);
+    }
 
 }
 
-chrome.runtime.onMessage.addListener(function (message, sender, callback) {
+chrome.runtime.onMessage.addListener(async function (message, sender, callback) {
 
 	if (message.functiontoInvoke === "toggleKoContextHover") {
 
-		var contextHoverPanel = document.getElementById('ko-context-hover');
+        let contextHoverPanel = document.getElementById('ko-context-hover');
 
 		// Toggle Off
 		if (contextHoverPanel) {
@@ -53,15 +44,15 @@ chrome.runtime.onMessage.addListener(function (message, sender, callback) {
 
 		(document.body || document.documentElement).appendChild(contextHoverPanel);
 
-		loadHtml(chrome.extension.getURL("markup/panel.html"), contextHoverPanel,
-			function (status) {
+        await loadHtml(await chrome.runtime.getURL("markup/panel.html"), contextHoverPanel,
+			async function (status) {
 
                 if (status === 200) {
 
                     // Load custom binding handlers and the main script
-                    runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.kchLet.js');
-                    runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js');
-                    runScriptInPageScope('scripts/ko-context-hover.js');
+                    await runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.kchLet.js');
+                    await runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js');
+                    await runScriptInPageScope('scripts/ko-context-hover.js');
 
                 } else {
                     console.log('Failed to load markup for the \'knockout-context-hover\' browser extension.')
