@@ -35,11 +35,6 @@
     "scripts/ko-context-hover.js",
     "reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js",
     "reference-binding-handlers/ko.bindingHandlers.kchLet.js"
-  ],
+  ]
 
-  "applications": {
-    "gecko": {
-      "id": "knockout@hover.com"
-    }
-  }
 }
