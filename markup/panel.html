@@ -21,11 +21,11 @@
 
 <!-- ko if: $root.viewMode.context -->
 <div id="ko-context-hover-target-element-info" data-bind="with: $root.targetElementAttributes">
-    <svg class="ko-context-hover-item-button arrows-cw" data-bind="click: $root.reapplyTargetElementBindings"></svg>
+    <svg class="ko-context-hover-item-button icon-arrows-cw" data-bind="click: $root.reapplyTargetElementBindings"></svg>
     <button class="ko-context-hover-pill ko-context-hover-pill-default" data-bind="click: $root.targetPreviousElement">
         <span>Previous node</span>
     </button>
-    <button class="ko-context-hover-pill ko-context-hover-pill-default" data-bind="click: $root.targetNextElement.bind(null, false)">
+    <button class="ko-context-hover-pill ko-context-hover-pill-default" data-bind="click: $root.targetNextElement.bind(null, false), enable: hasNextTarget === true">
         <span>Next node</span>
     </button>
     <button class="ko-context-hover-pill ko-context-hover-pill-default" data-bind="click: $root.targetNextElement.bind(null, true), enable: childElementCount > 0">
