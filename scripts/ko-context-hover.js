@@ -1,3 +1,9 @@
+(function (ko) {
+
+    if (!ko) {
+        return;
+    }
+
     let KoContextVm = function (ko) {
 
         if (!ko) {
@@ -491,24 +497,18 @@
 
     };
 
-    (function (ko) {
+    // Polyfill for ko.unwrap
+    if (ko.utils && typeof ko.unwrap !== 'function') {
+        ko.unwrap = ko.utils.unwrapObservable;
+    }
 
-        if (!ko) {
-            return;
-        }
+    let koContextHoverElement = document.getElementById('ko-context-hover');
+    let koContextHoverListElement = document.getElementById('ko-context-hover-list');
 
-        // Polyfill for ko.unwrap
-        if (ko.utils && typeof ko.unwrap !== 'function') {
-            ko.unwrap = ko.utils.unwrapObservable;
-        }
+    if (!koContextHoverElement || !koContextHoverListElement) {
+        return;
+    }
 
-        koContextHoverElement = document.getElementById('ko-context-hover');
-        koContextHoverListElement = document.getElementById('ko-context-hover-list');
+    ko.applyBindings(new KoContextVm(ko), koContextHoverElement);
 
-        if (!koContextHoverElement || !koContextHoverListElement) {
-            return;
-        }
-
-        ko.applyBindings(new KoContextVm(ko), koContextHoverElement);
-
-    })(window.ko || this.ko);
+})(window.ko || this.ko);
