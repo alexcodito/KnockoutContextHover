@@ -196,6 +196,7 @@
                 }
 
                 if (draggingWindowPanel === true) {
+
                     // Calculate initial position of the mouse relative to the context hover window
                     if (initialWindowMousePositionX === undefined || initialWindowMousePositionY === undefined) {
                         initialWindowMousePositionX = koContextHoverElement.clientWidth - (parseInt(koContextHoverElement.style.left) + koContextHoverElement.clientWidth - e.clientX);
@@ -230,9 +231,9 @@
 
                 if (clientX > window.document.body.clientWidth / 2) {
                     // Invert the direction of the panel's location offset when the mouse pointer is on the right part of the screen
-                    koContextHoverElement.style.left = clientX - koContextHoverElement.clientWidth - 5 + 'px';
+                    koContextHoverElement.style.left = clientX - document.documentElement.scrollLeft - koContextHoverElement.clientWidth - 5 + 'px';
                 } else {
-                    koContextHoverElement.style.left = clientX + 5 + 'px';
+                    koContextHoverElement.style.left = clientX + document.documentElement.scrollLeft + 5 + 'px';
                 }
 
                 if (clientY > window.document.body.clientHeight / 2) {
