@@ -7,7 +7,10 @@ let KoContextVm = function (ko) {
 
     const self = this;
     let targetElement;
+    let initialWindowMousePositionX;
+    let initialWindowMousePositionY;
     let koContextHoverElement = document.getElementById('ko-context-hover');
+    let koContextHoverLegendElement = document.getElementById('ko-context-hover-legend');
     let koContextHoverListElement = document.getElementById('ko-context-hover-list');
 
     if (!koContextHoverElement || !koContextHoverListElement) {
@@ -16,6 +19,19 @@ let KoContextVm = function (ko) {
 
     function truncate(str, max) {
         return str.length > max ? str.substr(0, max - 4) + ' ...' : str;
+    };
+
+    // Utility to ensure that the mouse isn't hovering the KO Context Hover panel itself to avoid recursion.
+    function checkTargetSelf(target) {
+
+        if (target === koContextHoverElement) {
+            return true;
+        } else if (target.parentElement) {
+            return checkTargetSelf(target.parentElement);
+        }
+
+        return false;
+
     };
 
     function reapplyNodeBindings(element) {
@@ -158,37 +174,35 @@ let KoContextVm = function (ko) {
 
             refreshTargetElementKoData();
         }
-        
+
     };
 
     function handleMouseMove(e) {
 
-        let koContextHover = document.getElementById('ko-context-hover');
+        // - 1) Manual window drag -
 
-        if (!koContextHover) {
+        // Drag while LMB is pressed down on the legend
+        if (e.buttons === 1 && e.target && (e.target.id === 'ko-context-hover-legend' || koContextHoverLegendElement.contains(e.target))) {
 
-            document.removeEventListener('mousemove', handleMouseMove);
-
-            if (targetElement && targetElement.classList) {
-                targetElement.classList.remove('ko-context-hover-target-element');
+            // Calculate initial position of the mouse relative to the context hover window
+            if (initialWindowMousePositionX === undefined || initialWindowMousePositionY === undefined) {
+                initialWindowMousePositionX = koContextHoverElement.clientWidth - (parseInt(koContextHoverElement.style.left) + koContextHoverElement.clientWidth - e.clientX);
+                initialWindowMousePositionY = koContextHoverElement.clientHeight - (parseInt(koContextHoverElement.style.top) + koContextHoverElement.clientHeight - e.clientY);
             }
 
-            return;
+            // Move context hover window to the new position of the mouse (relative to its initial position within the context hover window)
+            koContextHoverElement.style.left = e.clientX - initialWindowMousePositionX + 'px';
+            koContextHoverElement.style.top = e.clientY - initialWindowMousePositionY + 'px';
+
+        } else if (initialWindowMousePositionX || initialWindowMousePositionY) {
+            // Reset 
+            initialWindowMousePositionX = undefined;
+            initialWindowMousePositionY = undefined;
         }
 
-        // Ensure that the mouse isn't hovering the KO Context Hover panel itself to avoid recursion.
-        function checkTargetSelf (target) {
+        // - 2) Follow mouse move -
 
-            if (target === koContextHover) {
-                return true;
-            } else if (target.parentElement) {
-                return checkTargetSelf(target.parentElement);
-            }
-
-            return false;
-
-        };
-
+        // Check that the mouse isn't hovering the KO Context Hover panel itself to avoid recursion.
         if (checkTargetSelf(e.target)) {
             return;
         }
@@ -213,6 +227,8 @@ let KoContextVm = function (ko) {
             }
         }
 
+        // - 3) Get context for hovered element -
+
         if (self.settings.koContextHoverHalted()) {
             return;
         }
@@ -222,6 +238,7 @@ let KoContextVm = function (ko) {
         selectTargetElement(newTargetElement);
     };
 
+    // Global events
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('mousemove', handleMouseMove);
 
