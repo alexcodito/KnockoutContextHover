@@ -44,6 +44,7 @@
         background: #EFEFEF;
         padding-left: 5px;
         white-space: nowrap;
+        cursor: move;
     }
 
         #ko-context-hover #ko-context-hover-legend * {
