@@ -32,13 +32,13 @@ chrome.runtime.onMessage.addListener(async function (message, sender, callback) 
 
         let contextHoverPanel = document.getElementById('ko-context-hover');
 
-		// Toggle Off
-		if (contextHoverPanel) {
-			contextHoverPanel.remove();
+        // Toggle visibility when already intialized
+        if (contextHoverPanel) {            
+            contextHoverPanel.style.display = !contextHoverPanel.style.display ? 'none' : '';
 			return;
 		}
 
-		// Toggle On
+		// Load KoContextHover markup and scripts
 		contextHoverPanel = document.createElement('div');
 		contextHoverPanel.id = 'ko-context-hover';
 
