@@ -103,6 +103,7 @@ let KoContextVm = function (ko) {
             self.targetElementAttributes({
 
                 tagName: targetElement.tagName,
+                hasParentTarget: targetElement.parentNode !== null,
                 hasNextTarget: targetElement.nextSibling !== null || (targetElement.parentNode !== null && targetElement.parentNode.nextSibling !== null),
                 childElementCount: targetElement.childElementCount || 0,
                 name: targetElement.name ? truncate(targetElement.name, 30) : undefined,
@@ -157,9 +158,8 @@ let KoContextVm = function (ko) {
 
             refreshTargetElementKoData();
         }
-
-
-    }
+        
+    };
 
     function handleMouseMove(e) {
 
