@@ -36,10 +36,23 @@
     }
 
     #ko-context-hover #ko-context-hover-legend {
+        user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -o-user-select: none;
         background: #EFEFEF;
         padding-left: 5px;
         white-space: nowrap;
     }
+
+        #ko-context-hover #ko-context-hover-legend * {
+            user-select: none;
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -o-user-select: none;
+        }
 
     #ko-context-hover ul li {
         background-color: #fff;
