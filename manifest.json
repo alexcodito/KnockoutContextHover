@@ -1,13 +1,14 @@
 {
-  "name": "ko-context-hover",
+  "name": "Knockout Context Hover",
+  "short_name":  "ko-context-hover",
   "description": "KnockoutJS Context Hover - Development and debugging assistant for Knockout JS. Tested on: 3.4.2, 3.1.0, 2.2.1",
-  "version": "1.6",
+  "version": "1.7",
   "manifest_version": 2,
   "author": "Alexandros Papounidis",
   "icons": {
     "32": "icons/ko-context-hover-logo-32x32.png",
-    "64": "icons/ko-context-hover-logo-64x64.png",
-    "128": "icons/ko-context-hover-logo-128x128.png"
+	  "64": "icons/ko-context-hover-logo-64x64.png",
+	  "128": "icons/ko-context-hover-logo-128x128.png"	
   },
 
   "permissions": [
