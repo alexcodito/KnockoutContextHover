@@ -2,7 +2,7 @@
 
 chrome.contextMenus.create({
     id: "knockout-context-hover",
-    title: "Toggle KnockoutJS Context",
+    title: "KO Context Hover",
     contexts: ["page"]
 });
 
