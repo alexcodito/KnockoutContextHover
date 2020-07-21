@@ -1,5 +1,5 @@
 {
-  "name": "Knockout Context Hover",
+  "name": "Knockout Context Hover DEBUG",
   "short_name":  "ko-context-hover",
   "description": "KnockoutJS Context Hover - Development and debugging assistant for Knockout JS. Tested on: 3.4.2, 3.1.0, 2.2.1",
   "version": "1.7",
@@ -34,9 +34,7 @@
   "web_accessible_resources": [
     "icons/log.svg",
     "markup/panel.html",
-    "scripts/ko-context-hover.js",
-    "reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js",
-    "reference-binding-handlers/ko.bindingHandlers.kchLet.js"
+    "scripts/ko-context-hover.js"
   ]
 
 }

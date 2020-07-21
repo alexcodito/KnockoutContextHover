@@ -1,7 +1,49 @@
-(function (ko) {
+var kchBootstrap = function (ko) {
 
     if (!ko) {
         return;
+    }
+    
+
+    if (window.ko && !ko.bindingHandlers.kchHoverClass) {
+        ko.bindingHandlers.kchHoverClass = {
+            update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+
+                    element.addEventListener('mouseover', function (e) {
+                            if (element && e.target === element) {
+                                    element.classList.add("class", valueAccessor());
+                                    e.stopPropagation();
+                            }
+                    });
+
+                    element.addEventListener('mouseout', function (e) {
+
+                            if (element && element.children && e.target) {
+
+                                    var match = ko.utils.arrayFirst(element.children, function (element) {
+                                            return element === e.relatedTarget;
+                                    });
+
+                                    if (!match) {
+                                            element.classList.remove("class", valueAccessor());
+                                    }
+                            }
+                    });
+
+            }
+        };
+    }
+
+    if (window.ko && !ko.bindingHandlers.kchLet) {
+	ko.bindingHandlers.kchLet = {
+	    'init': function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+		// Make a modified binding context, with extra properties, and apply it to descendant elements
+		var innerContext = bindingContext['extend'](valueAccessor());
+		ko.applyBindingsToDescendants(innerContext, element);
+		return { 'controlsDescendantBindings': true };
+	    }
+	};
+	ko.virtualElements.allowedBindings.kchLet = true;
     }
 
     let KoContextVm = function (ko) {
@@ -159,6 +201,24 @@
                 self.settings.koContextHoverHalted(!self.settings.koContextHoverHalted());
             }
 
+            if (e.keyCode === 27) {
+                let contextHoverPanel = document.getElementById('ko-context-hover');
+
+                if (contextHoverPanel) {            
+                    contextHoverPanel.style.display = 'none';
+                }
+                targetElement.classList.remove('ko-context-hover-target-element');
+                
+                self.settings.koContextHoverHalted(true);
+                self.settings.koContextHoverFollowCursorHalted(true);
+            }
+
+            if (e.keyCode === 32) {
+                self.settings.koContextHoverHalted(true);
+                self.settings.koContextHoverFollowCursorHalted(true);
+                e.preventDefault();
+            }
+
             if (e.shiftKey && e.keyCode === 50) {
                 self.settings.koContextHoverFollowCursorHalted(!self.settings.koContextHoverFollowCursorHalted());
             }
@@ -183,6 +243,17 @@
             }
 
         };
+
+        function handleMouseClick(e) {
+            // Check that the mouse isn't hovering the KO Context Hover panel itself to avoid recursion.
+            if (checkTargetSelf(e.target)) {
+                return;
+            }
+
+            self.settings.koContextHoverHalted(true);
+            self.settings.koContextHoverFollowCursorHalted(true);
+            return e.preventDefault();
+        }
 
         function handleMouseMove(e) {
 
@@ -258,6 +329,7 @@
         // Global events
         document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('click', handleMouseClick);
 
         self.targetElementAttributes = ko.observable();
         self.targetElementKoData = ko.observable({});
@@ -435,7 +507,7 @@
         self.checkDataIsInvokable = function (data) {
 
             let uData = ko.unwrap(data);
-
+	    
             return uData !== undefined
                 && uData !== null
                 && ((typeof uData === 'object' && !Array.isArray(uData)) || (Array.isArray(uData) && uData.length > 0))
@@ -511,5 +583,15 @@
     }
 
     ko.applyBindings(new KoContextVm(ko), koContextHoverElement);
+}
 
-})(window.ko || this.ko);
+var ko = (window.ko || this.ko); 
+
+if(!ko && typeof requirejs != "undefined") {
+    requirejs(["knockout"], function(knockoutjs) {
+	window.ko = knockoutjs;
+	kchBootstrap(ko);
+    });
+} else {
+    kchBootstrap(ko); 
+}
