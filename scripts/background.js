@@ -3,7 +3,7 @@
 chrome.contextMenus.create({
     id: "knockout-context-hover",
     title: "KO Context Hover",
-    contexts: ["page"]
+    contexts: ["page", "image", "selection", "link", "editable"]
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
