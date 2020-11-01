@@ -32,7 +32,6 @@
   },
 
   "web_accessible_resources": [
-    "icons/log.svg",
     "markup/panel.html",
     "scripts/ko-context-hover.js",
     "reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js",
