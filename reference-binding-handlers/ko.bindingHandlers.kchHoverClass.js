@@ -8,10 +8,8 @@
 				update: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
 
 					element.addEventListener('mouseover', function (e) {
-						if (element && e.target === element) {
-							element.classList.add("class", valueAccessor());
-							e.stopPropagation();
-						}
+						element.classList.add("class", valueAccessor());
+						e.stopPropagation();
 					});
 
 					element.addEventListener('mouseout', function (e) {
