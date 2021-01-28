@@ -2,7 +2,7 @@
   "name": "Knockout Context Hover",
   "short_name":  "ko-context-hover",
   "description": "KnockoutJS Context Hover - Development and debugging assistant for Knockout JS. Tested on: 3.4.2, 3.1.0, 2.2.1",
-  "version": "1.7",
+  "version": "1.8",
   "manifest_version": 2,
   "author": "Alexandros Papounidis",
   "icons": {
