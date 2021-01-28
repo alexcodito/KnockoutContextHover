@@ -12,9 +12,9 @@
     background-color: #fff;
     border: 1px solid #b5b5b5;
     min-height: 95px;
-    max-height: 600px;
-    min-width: 800px;
-    max-width: 800px;
+    max-height: 60vh;
+    min-width: 860px;
+    max-width: 80vw;
     overflow: hidden;
     padding: 5px;
     position: absolute;
@@ -25,14 +25,20 @@
     z-index: 99999 !important;
     color: #333;
     box-shadow: rgba(0, 0, 0, 0.35) 0 0 6px;
+    display: flex;
+    flex-direction: column;
+    resize: both;
 }
 
     #ko-context-hover #ko-context-hover-list {
         list-style: none;
         margin: 0;
-        max-height: 500px;
+        height: 100%;
         overflow: scroll;
         padding: 5px 0;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
     }
 
     #ko-context-hover #ko-context-hover-legend {
@@ -45,6 +51,7 @@
         padding-left: 5px;
         white-space: nowrap;
         cursor: move;
+        display: flex;
     }
 
         #ko-context-hover #ko-context-hover-legend * {
@@ -58,14 +65,33 @@
     #ko-context-hover ul li {
         background-color: #fff;
         color: #000;
-        display: table;
-        font-size: 10pt !important;
+        font-size: 8pt !important;
         padding: 3px;
+        display: flex;
+        flex-grow: 0;
+        align-items: flex-start;
+        flex-wrap: nowrap;
+        flex-direction: column;
         width: 100%;
+        min-width: min-content;
     }
 
+        #ko-context-hover ul li div {
+            display: flex;
+            align-items: center;
+            min-height: 24px;
+            width: 100%;
+            min-width: min-content;
+            padding: 0 5px;
+        }
+
         #ko-context-hover ul li ul {
-            padding-left: 10px;
+            padding-left: 15px;
+            margin-top: 3px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
         }
 
             #ko-context-hover ul li ul li {
@@ -78,12 +104,10 @@
 
     #ko-context-hover .ko-context-hover-item-descriptor {
         font-weight: 700;
-        margin-right: 5px;
-        vertical-align: middle;
+        margin-right: 10px;
     }
 
     #ko-context-hover .ko-context-hover-item-editable {
-        vertical-align: middle;
         line-height: 22px;
         padding: 0 4px;
     }
@@ -108,30 +132,19 @@
 
     #ko-context-hover .ko-context-hover-item-button {
         cursor: pointer;
-        margin: 0 5px;
-        display: inline-block;
-        vertical-align: middle;
+        flex-basis: 30px;
         height: 12px;
         width: 12px;
-    }
-
-    #ko-context-hover .ko-context-hover-item-icon {
-        margin-right: 5px;
-        display: inline-block;
-        vertical-align: middle;
-        height: 12px;
-        width: 12px;
+        align-self: center;
+        flex-shrink: 0;
     }
 
     #ko-context-hover .ko-context-hover-item-value {
         color: #000;
-        vertical-align: middle;
     }
 
     #ko-context-hover label.ko-context-hover-item-value {
-        display: inline-block;
-        padding-left: 15px;
-        text-indent: -15px;
+        padding-left: 0px;
         margin: 0;
     }
 
@@ -143,6 +156,8 @@
     background-color: #232323;
     padding: 4px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 
 #ko-context-hover #ko-context-hover-target-element-info-tag {
@@ -203,14 +218,12 @@
 
 #ko-context-hover .chevron {
     -webkit-transform: rotate(-90deg);
-    display: inline-block;
     height: 5px;
-    margin-right: 5px;
     position: relative;
     transform: rotate(-90deg);
-    vertical-align: middle;
     width: 10px;
     cursor: pointer;
+    display: inline-flex;
 }
 
 #ko-context-hover .chevron-uncollapsed {
@@ -221,8 +234,6 @@
 #ko-context-hover .chevron:before, .chevron:after {
     border: 5px solid transparent;
     content: "";
-    display: block;
-    position: absolute;
 }
 
 #ko-context-hover .chevron:before {
@@ -243,24 +254,21 @@
 
 #ko-context-hover .ko-context-hover-pill-group {
     margin-right: 15px;
-    display: inline-block;
     padding: 3px;
 }
 
 #ko-context-hover .ko-context-hover-pill-header {
     vertical-align: middle;
-    display: inline-block;
     font-weight: bold;
 }
 
 #ko-context-hover .ko-context-hover-pill {
-    display: inline-block;
     font-weight: 400;
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
     cursor: pointer;
-    padding: 2px 6px;
+    padding: 3px 6px;
     font-size: 11px !important;
     line-height: 1.4;
     -moz-border-radius: 2px;
@@ -269,6 +277,7 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
+    margin: 0 2px;
 }
 
 #ko-context-hover .ko-context-hover-pill-info {
