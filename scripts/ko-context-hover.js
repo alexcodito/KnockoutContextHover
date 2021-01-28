@@ -144,6 +144,25 @@
 
             };
 
+            function selectTargetElement(newTargetElement) {
+
+                if (newTargetElement && targetElement !== newTargetElement) {
+
+                    if (targetElement && targetElement.classList) {
+                        targetElement.classList.remove('ko-context-hover-target-element');
+                    }
+
+                    if (newTargetElement && newTargetElement.classList) {
+                        newTargetElement.classList.add('ko-context-hover-target-element');
+                    }
+
+                    targetElement = newTargetElement;
+
+                    refreshTargetElementKoData();
+                }
+
+            };
+
             function handleKeyDown(e) {
 
                 if (!document.getElementById('ko-context-hover')) {
@@ -163,25 +182,6 @@
 
                 if (e.shiftKey && e.keyCode === 50) {
                     self.settings.koContextHoverFollowCursorHalted(!self.settings.koContextHoverFollowCursorHalted());
-                }
-
-            };
-
-            function selectTargetElement(newTargetElement) {
-
-                if (newTargetElement && targetElement !== newTargetElement) {
-
-                    if (targetElement && targetElement.classList) {
-                        targetElement.classList.remove('ko-context-hover-target-element');
-                    }
-
-                    if (newTargetElement && newTargetElement.classList) {
-                        newTargetElement.classList.add('ko-context-hover-target-element');
-                    }
-
-                    targetElement = newTargetElement;
-
-                    refreshTargetElementKoData();
                 }
 
             };
@@ -290,9 +290,10 @@
                     { name: 'Context', action: ko.contextFor }
                 ],
 
-                yesNo: [
-                    { name: 'Yes', value: true },
-                    { name: 'No', value: false },
+                sortModes: [
+                    { name: 'None', code: undefined },
+                    { name: 'Key', code: 'key' },
+                    { name: 'Type', code: 'type' }
                 ]
 
             };
@@ -300,6 +301,7 @@
             self.settings = {
 
                 rootScope: ko.observable(self.ref.scopes[0]),
+                sortMode: ko.observable(),
                 logUnwrap: ko.observable(true),
                 koContextHoverHalted: ko.observable(false),
                 koContextHoverFollowCursorHalted: ko.observable(false),
@@ -348,6 +350,32 @@
                     reapplyNodeBindings(targetElement);
                     refreshTargetElementKoData();
                 }
+
+            };
+
+            self.getContextKeys = function (data) {
+
+                const keys = Object.keys(ko.unwrap(data))
+
+                if (self.settings.sortMode() === 'key') {
+                    return keys.sort(function (key1, key2) {
+                        return ('' + key1).localeCompare('' + key2);
+                    });
+                }
+
+                if (self.settings.sortMode() === 'type') {
+                    const entries = Object.entries(ko.unwrap(data));
+                    const sortedEntries = entries.sort(function (entry1, entry2) {
+                        const uEntry1 = ko.unwrap(entry1[1]);
+                        const uEntry2 = ko.unwrap(entry2[1]);
+                        
+                        return (Array.isArray(uEntry1) ? 'array' : typeof uEntry1).localeCompare(Array.isArray(uEntry2) ? 'array' : typeof uEntry2);
+                    });
+
+                    return sortedEntries.map(a => a[0]);
+                }
+
+                return keys;
 
             };
 
@@ -524,6 +552,6 @@
             window.ko = knockoutjs;
             kchBootstrap(knockoutjs);
         });
-    } 
+    }
 
 })(window.ko || this.ko);
