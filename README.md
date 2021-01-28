@@ -14,7 +14,7 @@ Browser extension for KnockoutJS development and debugging
 - Display the hovered element's KnockoutJS context, HTML tag and attributes
 - Traverse complex objects and arrays
 - Set values of variables and observables
-- Convert variables into observables
+- Convert plain variables into observables
 - Refresh hovered element's KO bindings
 - Log context objects straight into the browser Dev tools console
 - Shortcuts for following the mouse cursor & toggling live context
@@ -23,6 +23,8 @@ Browser extension for KnockoutJS development and debugging
 ##### Tested KnockoutJS versions
 
 3.4.2, 3.1.0, 2.2.1
+
+Supports KnockoutJS loaded as a RequireJS module
 
 ##### Disclaimer
 Knockout JS makes use of unsafe practices (e.g. eval, innerHTML). This will cause browser validators to flag this extension with several warnings.
