@@ -1,7 +1,7 @@
 <div align="center">
     <img src="icons/ko-context-hover-logo-128x128.png" width="128" alt="KO Context Hover Screenshot 1"> 
     <br>
-    <h2>Knockout Context Hover</h2>
+    <h1>Knockout Context Hover</h1>
     <span>A browser extension for KnockoutJS development and debugging</span>
 </div>
 
@@ -22,17 +22,6 @@
     <img src="https://badgen.net/amo/reviews/ko-context-hover" >
 </div>
 
-<br>
-
-<center>
-
-| | |
-|:-------------------------:|:-------------------------:|
-|<img src="https://imgur.com/dhNG7YW.png" width="320" alt="KO Context Hover Screenshot 1">|<img src="https://imgur.com/upTXnsr.png" width="320" alt="KO Context Hover Screenshot 2"> 
-|<img src="https://imgur.com/2zKTkm6.png" width="320" alt="KO Context Hover Screenshot 3">|<img src="https://imgur.com/j1HRW9G.png" width="320" alt="KO Context Hover Screenshot 4">|
-
-</center>
-
 ## Overview
 
 - Display the hovered element's KnockoutJS context, HTML tag and attributes
@@ -48,13 +37,26 @@
 
 Right click on a page that runs KnockoutJS and press the "KO Context Hover" option to activate the panel. Shortcuts for controlling mouse pointer following/live context data are present at the top of the panel.
 
+<center>
+
+#### Demo
+
 <img src="https://j.gifs.com/VAyY2v.gif" width="640" alt="KO Context Hover GIF 1">
+
+#### Sample Screenshots
+
+</center>
+
+| | |
+|:-------------------------:|:-------------------------:|
+|<img src="https://imgur.com/dhNG7YW.png" alt="KO Context Hover Screenshot 1">|<img src="https://imgur.com/upTXnsr.png" alt="KO Context Hover Screenshot 2"> 
+|<img src="https://imgur.com/2zKTkm6.png" alt="KO Context Hover Screenshot 3">|<img src="https://imgur.com/j1HRW9G.png" alt="KO Context Hover Screenshot 4">|
 
 ## Tested KnockoutJS versions
 
 3.4.2, 3.1.0, 2.2.1
 
-Supports KnockoutJS loaded as a RequireJS module
+Supports KnockoutJS loaded as a RequireJS module.
 
 ## Disclaimer
 Knockout JS makes use of unsafe practices (e.g. eval, innerHTML). This will cause browser validators to flag this extension with several warnings.
