@@ -33,6 +33,7 @@
 
   "web_accessible_resources": [
     "markup/panel.html",
+    "scripts/bootstrap.js",
     "scripts/ko-context-hover.js",
     "reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js",
     "reference-binding-handlers/ko.bindingHandlers.kchLet.js"

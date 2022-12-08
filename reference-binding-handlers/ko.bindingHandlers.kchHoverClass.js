@@ -1,4 +1,6 @@
-﻿(function (ko) {
+﻿import { ko } from "./../scripts/bootstrap.js";
+
+(function (ko) {
 
 	var kchHoverClassBootstrap = function (ko) {
 
@@ -34,11 +36,9 @@
 
 	if (ko) {
 		kchHoverClassBootstrap(ko)
-	} else if (typeof requirejs !== "undefined") {
-		// Attempt to load Knockout as a RequireJS module
-		requirejs(["knockout"], function (knockoutjs) {
-			kchHoverClassBootstrap(knockoutjs);
-		});
+	} else {
+		// bootstrapKnockoutApi could not found any instances, aborting...
+        return
 	}
 
-})(window.ko || this.ko);
+})(ko);
