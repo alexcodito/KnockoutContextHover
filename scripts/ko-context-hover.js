@@ -1,17 +1,15 @@
+// .js is required for matching web_accessible_resources module pattern
+import { ko } from "./bootstrap.js"
+
 (function (ko) {
-
     var kchBootstrap = function (ko) {
-
-        if (!ko) {
-            return;
-        }
-
+        /**
+         * Create a viewmodel for hoverable panel
+         * 
+         * @param {knockout<object>} ko 
+         * @returns {object} Knockout Context factory ViewModel
+         */
         let KoContextVm = function (ko) {
-
-            if (!ko) {
-                console.log('KnockoutContextHover: ko is not defined.');
-                return undefined;
-            }
 
             const self = this;
             let targetElement;
@@ -26,11 +24,24 @@
                 return undefined;
             }
 
+            /**
+             * Shorten a given string @see str if
+             * it exeeds @see max characters length
+             * 
+             * @param {String} str String to shorten
+             * @param {Number} max Maximum @see str length allowed
+             * before shortening it
+             * @returns 
+             */
             function truncate(str, max) {
                 return str.length > max ? str.substr(0, max - 4) + ' ...' : str;
             };
 
-            // Utility to ensure that the mouse isn't hovering the KO Context Hover panel itself to avoid recursion.
+            /**
+             * Utility to ensure that the mouse isn't hovering
+             * the KO Context Hover panel itself
+             * to avoid recursion.
+             */
             function checkTargetSelf(target) {
 
                 if (target === koContextHoverElement) {
@@ -108,6 +119,9 @@
 
             };
 
+            /**
+             * Triggers on change of selected by cursor element
+             */
             function refreshTargetElementKoData() {
 
                 if (targetElement) {
@@ -126,7 +140,6 @@
                     }
 
                     self.targetElementAttributes({
-
                         tagName: targetElement.tagName,
                         hasParentTarget: targetElement.parentNode !== null,
                         hasNextTarget: targetElement.nextSibling !== null || (targetElement.parentNode !== null && targetElement.parentNode.nextSibling !== null),
@@ -134,7 +147,6 @@
                         name: targetElement.name ? truncate(targetElement.name, 30) : undefined,
                         id: targetElement.id ? truncate(targetElement.id, 30) : undefined,
                         classList: classList ? truncate(classList.join(' '), 50) : undefined
-
                     });
 
                 } else {
@@ -144,6 +156,13 @@
 
             };
 
+            /**
+             * 
+             * @param {Element} newTargetElement New DOM Element at
+             * which apply monitoring
+             * if new element is found
+             * refresh its data with @see refreshTargetElementKoData
+             */
             function selectTargetElement(newTargetElement) {
 
                 if (newTargetElement && targetElement !== newTargetElement) {
@@ -546,12 +565,8 @@
 
     if (ko) {
         kchBootstrap(ko);
-    } else if (typeof requirejs !== "undefined") {
-        // Attempt to load Knockout as a RequireJS module
-        requirejs(["knockout"], function (knockoutjs) {
-            window.ko = knockoutjs;
-            kchBootstrap(knockoutjs);
-        });
+    } else {
+        // bootstrapKnockoutApi could not found any instances, aborting...
+        return
     }
-
-})(window.ko || this.ko);
+})(ko);

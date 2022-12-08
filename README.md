@@ -35,7 +35,7 @@
 
 ## How to use
 
-Right click on a page that runs KnockoutJS and press the "KO Context Hover" option to activate the panel. Shortcuts for controlling mouse pointer following/live context data are present at the top of the panel.
+Right click on a page that runs KnockoutJS and press the "KO Context Hover" option to activate the panel. Shortcuts for controlling mouse pointer following (`shift` + `1`)/live (`shift` + `2`) context data are present at the top of the panel.
 
 <center>
 

@@ -1,3 +1,5 @@
+import { ko } from "./../scripts/bootstrap.js";
+
 (function (ko) {
 
     var kchLetBootstrap = function (ko) {
@@ -23,11 +25,9 @@
 
     if (ko) {
         kchLetBootstrap(ko)
-    } else if (typeof requirejs !== "undefined") {
-        // Attempt to load Knockout as a RequireJS module
-        requirejs(["knockout"], function (knockoutjs) {
-            kchLetBootstrap(knockoutjs);
-        });
+    } else {
+        // bootstrapKnockoutApi could not found any instances, aborting...
+        return
     }
 
-})(window.ko || this.ko);
+})(ko);
