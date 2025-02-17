@@ -4,23 +4,28 @@ chrome.runtime.onInstalled.addListener(() => {
         title: "KO Context Hover",
         contexts: ["page", "image", "selection", "link", "editable"]
     });
+});
 
-    chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-        if (!tab?.id) return;
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+    if (!tab?.id) return;
 
+    try {
+        // Check communication with the content script
         try {
-            // First try to inject the content script if it's not already there
+            await chrome.tabs.sendMessage(tab.id, { ping: true });
+        } catch (e) {
+            // Content script not available, inject it
             await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 files: ['scripts/contentscript.js']
             });
-
-            // Then send the message
-            await chrome.tabs.sendMessage(tab.id, {
-                "functionToInvoke": "toggleKoContextHover"
-            });
-        } catch (error) {
-            console.error('Failed to send message to content script:', error);
         }
-    });
+
+        // Send the command
+        await chrome.tabs.sendMessage(tab.id, {
+            functionToInvoke: "toggleKoContextHover"
+        });
+    } catch (error) {
+        console.error('Failed to send message to content script:', error);
+    }
 });
