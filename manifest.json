@@ -1,41 +1,38 @@
 {
   "name": "Knockout Context Hover",
-  "short_name":  "ko-context-hover",
+  "short_name": "ko-context-hover",
   "description": "KnockoutJS Context Hover - Development and debugging assistant for Knockout JS. Tested on: 3.4.2, 3.1.0, 2.2.1",
   "version": "1.8",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "author": "Alexandros Papounidis",
   "icons": {
     "32": "icons/ko-context-hover-logo-32x32.png",
-	  "64": "icons/ko-context-hover-logo-64x64.png",
-	  "128": "icons/ko-context-hover-logo-128x128.png"	
+    "64": "icons/ko-context-hover-logo-64x64.png",
+    "128": "icons/ko-context-hover-logo-128x128.png"
   },
-
-  "permissions": [
-    "activeTab",
-    "contextMenus"
-  ],
-
+  "permissions": ["scripting", "contextMenus"],
+  "host_permissions": ["https://*/*", "http://*/*"],
   "content_scripts": [
     {
-      "matches": [ "<all_urls>" ],
-      "css": [ "styles/ko-context-hover-style.css" ],
-      "js": [
-        "scripts/knockoutjs-3.4.2.min.js",
-        "scripts/contentscript.js"
-      ]
+      "matches": ["<all_urls>"],
+      "css": ["styles/ko-context-hover-style.css"],
+      "js": ["scripts/knockoutjs-3.4.2.min.js", "scripts/contentscript.js"]
     }
   ],
-
   "background": {
-    "scripts": [ "scripts/background.js" ]
+    "service_worker": "scripts/background.js"
   },
-
   "web_accessible_resources": [
-    "markup/panel.html",
-    "scripts/ko-context-hover.js",
-    "reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js",
-    "reference-binding-handlers/ko.bindingHandlers.kchLet.js"
-  ]
-
+    {
+      "resources": [
+        "markup/panel.html",
+        "reference-binding-handlers/*.js",
+        "scripts/*.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
 }
