@@ -20,7 +20,9 @@
     }
   ],
   "background": {
-    "service_worker": "scripts/background.js"
+    "preferred_environment": ["service_worker"],
+    "service_worker": "scripts/background.js",
+    "scripts": ["scripts/background.js"]
   },
   "web_accessible_resources": [
     {
