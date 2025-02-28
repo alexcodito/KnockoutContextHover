@@ -19,8 +19,12 @@
       "js": ["scripts/knockoutjs-3.4.2.min.js", "scripts/contentscript.js"]
     }
   ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "f2987444-d788-44e9-b2d0-e4a3d6b91f35"
+    }
+  },
   "background": {
-    "preferred_environment": ["service_worker"],
     "service_worker": "scripts/background.js",
     "scripts": ["scripts/background.js"]
   },
