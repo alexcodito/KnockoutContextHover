@@ -37,6 +37,15 @@
 
 Right click on a page that runs KnockoutJS and press the "KO Context Hover" option to activate the panel. Shortcuts for controlling mouse pointer following/live context data are present at the top of the panel.
 
+# Packaging 
+Use the included build.ps1 script to package the extension. The build script updates the manifest.json to conform to the requirements of the target browser. 
+
+Supported browser options: `chrome`, `firefox` 
+
+Example:
+
+`.\build.ps1 -Browser chrome -Version "1.9"`
+
 <center>
 
 #### Demo
