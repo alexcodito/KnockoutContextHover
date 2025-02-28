@@ -1,65 +1,81 @@
 async function runScriptInPageScope(scriptPath) {
+    const script = document.createElement('script');
+    script.src = chrome.runtime.getURL(scriptPath);
+    script.type = "text/javascript";
 
-    let script = document.createElement('script');
-	script.setAttribute("type", "text/javascript");
-    script.setAttribute("src", await chrome.runtime.getURL(scriptPath));
-
-	script.onload = function () {
-		this.remove();
-	};
-
-	(document.body || document.documentElement).appendChild(script);
-
+    return new Promise((resolve, reject) => {
+        script.onload = () => {
+            script.remove();
+            resolve();
+        };
+        script.onerror = () => reject(new Error(`Failed to load script: ${scriptPath}`));
+        (document.head || document.documentElement).appendChild(script);
+    });
 }
 
 async function loadHtml(url, element, callback) {
+    try {
+        const response = await fetch(url);
+        const success = response.status === 200;
 
-    const request = await fetch(url);
+        if (element && success) {
+            element.innerHTML = await response.text();
+        }
 
-    if (element && request.status === 200) {
-        element.innerHTML = await request.text();
+        callback?.(response.status);
+        return success;
+    } catch (error) {
+        console.error(`Error loading HTML from ${url}:`, error);
+        callback?.(0);
+        return false;
     }
-
-    if (typeof callback === "function") {
-        callback(request.status);
-    }
-
 }
 
-chrome.runtime.onMessage.addListener(async function (message, sender, callback) {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    // Handle ping message for script injection check
+    if (message.ping) {
+        sendResponse(true);
+        return;
+    }
 
-	if (message.functiontoInvoke === "toggleKoContextHover") {
-
-        let contextHoverPanel = document.getElementById('ko-context-hover');
-
-        // Toggle visibility when already intialized
-        if (contextHoverPanel) {            
-            contextHoverPanel.style.display = !contextHoverPanel.style.display ? 'none' : '';
-			return;
-		}
-
-		// Load KoContextHover markup and scripts
-		contextHoverPanel = document.createElement('div');
-		contextHoverPanel.id = 'ko-context-hover';
-
-		(document.body || document.documentElement).appendChild(contextHoverPanel);
-
-        await loadHtml(await chrome.runtime.getURL("markup/panel.html"), contextHoverPanel,
-			async function (status) {
-
-                if (status === 200) {
-
-                    // Load custom binding handlers and the main script
-                    await runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.kchLet.js');
-                    await runScriptInPageScope('reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js');
-                    await runScriptInPageScope('scripts/ko-context-hover.js');
-
-                } else {
-                    console.log('Failed to load markup for the \'knockout-context-hover\' browser extension.')
-                }
-
-			});
-
-	}
-
+    if (message.functionToInvoke === "toggleKoContextHover") {
+        handleKoContextHover()
+            .then(() => sendResponse(true))
+            .catch((error) => {
+                console.error(error);
+                sendResponse(false);
+            });
+        return true;
+    }
 });
+
+async function handleKoContextHover() {
+    const PANEL_ID = 'ko-context-hover';
+    let panel = document.getElementById(PANEL_ID);
+
+    if (panel) {
+        panel.style.display = panel.style.display ? '' : 'none';
+        return;
+    }
+
+    panel = document.createElement('div');
+    panel.id = PANEL_ID;
+    document.body.appendChild(panel);
+
+    const panelUrl = await chrome.runtime.getURL("markup/panel.html");
+    const success = await loadHtml(panelUrl, panel);
+
+    if (success) {
+        try {
+            await Promise.all([
+                'reference-binding-handlers/ko.bindingHandlers.kchLet.js',
+                'reference-binding-handlers/ko.bindingHandlers.kchHoverClass.js',
+                'scripts/ko-context-hover.js'
+            ].map(runScriptInPageScope));
+        } catch (error) {
+            console.error('Failed to load scripts for knockout-context-hover:', error);
+        }
+    } else {
+        console.error('Failed to load markup for knockout-context-hover browser extension');
+    }
+}
